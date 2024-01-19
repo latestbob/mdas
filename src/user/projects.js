@@ -65,6 +65,7 @@ function Project(){
     const[supportEdit, setSupportEdit] = useState("");
     const[stageEdit, setStageEdit] = useState("");
     const[idEdit, setIdEdit] = useState("");
+    const[statusEdit, setStatusEdit] = useState("");
 
 
 
@@ -214,7 +215,8 @@ function Project(){
             budget:budgetEdit,
             owner:ownerEdit,
             support:supportEdit,
-            stage:stageEdit
+            stage:stageEdit,
+            status:statusEdit,
             });
         
             // Handle success
@@ -252,7 +254,7 @@ function Project(){
             case 'Execution':
             return 'bg-primary text-light';
 
-            case 'Completed':
+            case 'Done':
             return 'bg-success text-light';
 
             case 'Overdue':
@@ -262,8 +264,34 @@ function Project(){
             return 'bg-secondary'; // Default color for unknown stages
         }
       }
+
+
+      function getStatusColor(stage) {
+        switch (stage) {
+          case 'Late':
+            return 'bg-danger text-light';
+          case 'Not Started':
+            return 'bg-secondary text-light';
+
+            case 'On Time':
+            return 'bg-warning text-dark';
+
+            case 'Completed':
+            return 'bg-success text-light';
+
+            
+          // Add more cases for other stages if needed
+          default:
+            return 'bg-primary'; // Default color for unknown stages
+        }
+      }
     
 
+
+      const statusOptions =
+      stageEdit === 'Initiation' || stageEdit === 'Planning'
+      ? ['Not Started']
+      : ['On Time', 'Completed'];
   
 
     return (
@@ -372,6 +400,7 @@ function Project(){
                                 <th>Owner</th>
                                 <th>Supporting MDAs and Consultants</th>
                                 <th>Stage</th>
+                                <th>Status</th>
                                 <th>Action</th>
                             </tr>
 
@@ -422,6 +451,8 @@ function Project(){
                                 <td>
                                 <span className={`badge ${getBadgeColor(m.stage)}`}>{m.stage}</span>
                                 </td>
+
+                                <td><span className={`badge ${getStatusColor(m.status)}`}>{m.status}</span></td>
                                 <td>
                                     <a onClick={function(){
                                     setDateEdit(m.date);
@@ -430,6 +461,7 @@ function Project(){
                                     setSupportEdit(m.support);
                                     setStageEdit(m.stage);
                                     setIdEdit(m.id);
+                                    setStatusEdit(m.status);
                                 }}  className='btn btn-sm btn-warning text-dark'type="button"data-toggle="modal" data-target={`#exampleModalLong${index}`}>Edit</a>
                                 </td>
 
@@ -455,7 +487,7 @@ function Project(){
                                 <label>Estimated Completion Date</label>
                                 <input onChange={function(e){
                                     setDateEdit(e.target.value);
-                                }} type="month"value={dateEdit} className='form-control'placeholder='Estimated Completion Date'required/>
+                                }} type="date"value={dateEdit} className='form-control'placeholder='Estimated Completion Date'required/>
                             </div>
 
                             <div className='col-md-6'>
@@ -498,10 +530,33 @@ function Project(){
                                     setStageEdit(e.target.value);
                                 }} value={stageEdit}className='form-control'required>
                                     <option value="">Choose Stage</option>
-                                    <option value="Planning" >Planning</option>
                                     <option value="Initiation" >Initiation</option>
+                                    <option value="Planning" >Planning</option>
+                                    
                                     <option value="Execution" >Execution</option>
-                                    <option value="Completed" >Completed</option>
+                                    <option value="Done" >Done</option>
+                                    
+                                </select>
+                            </div>
+
+                            <div className='col-md-6'>
+                                <label>Status</label>
+                                <select onChange={function(e){
+                                    setStatusEdit(e.target.value);
+
+                                   
+
+                                }} value={statusEdit} disabled={statusEdit === 'Late'} className='form-control' required>
+                                    <option value="">Choose Status</option>
+
+                                    
+                                    {statusOptions.map((option) => (
+                                        <option key={option} value={option}>
+                                            {option}
+                                        </option>
+                                        ))}
+
+                                        {/* <option value="Late">Late</option> */}
                                     
                                 </select>
                             </div>
@@ -510,6 +565,9 @@ function Project(){
                                 setIdEdit(e.target.value);
                             }} value={idEdit}/>
                         </div>
+
+
+                        
 
                         <div className='form-group'>
                             <button type='submit' className='btn btn-success text-center'>Update Initiative</button>
@@ -607,7 +665,7 @@ function Project(){
                                 <label>Estimated Completion Date</label>
                                 <input onChange={function(e){
                                     setDate(e.target.value);
-                                }} type="month"value={date} className='form-control'placeholder='Estimated Completion Date'required/>
+                                }} type="date"value={date} className='form-control'placeholder='Estimated Completion Date'required/>
                             </div>
                         </div>
 
@@ -633,10 +691,11 @@ function Project(){
                         <div className='form-group row'>
                             <div className='col-md-6'>
                                 <label>Supporting MDAs/Consultants</label>
-                                <input onChange={function(e){
+                                <textarea row="5" onChange={function(e){
                                     setSupport(e.target.value);
-                                }} type="text"value={support} className='form-control'placeholder='Supporting MDAs/Consultants'required/>
+                                }} type="text"value={support} className='form-control'placeholder='Supporting MDAs/Consultants'required></textarea>
 
+                                
                                 
                             </div>
 
@@ -646,10 +705,11 @@ function Project(){
                                     setStage(e.target.value);
                                 }} value={stage}className='form-control'required>
                                     <option value="">Choose Stage</option>
-                                    <option value="Planning" >Planning</option>
                                     <option value="Initiation" >Initiation</option>
+                                    <option value="Planning" >Planning</option>
+                                    
                                     <option value="Execution" >Execution</option>
-                                    <option value="Completed" >Completed</option>
+                                    <option value="Done" >Done</option>
                                     
                                 </select>
                             </div>

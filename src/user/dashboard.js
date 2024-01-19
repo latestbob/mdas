@@ -161,11 +161,11 @@ function Dashboard(){
                 {/* activity count */}
 
                 <div className='row'>
-                        <div className='col-md-4 mb-3'>
+                        <div className='col-md-6 mb-3'>
                             <div className='count bg-danger rounded px-3'>
 
                                 <div>
-                                    <p className='title'>Overdue <br/> <span className='figure'>{summary.overdue}</span></p>
+                                    <p className='title'>Late <br/> <span className='figure'>{summary.late_percent}%</span></p>
 
                                    
                                 </div>
@@ -175,15 +175,15 @@ function Dashboard(){
                             </div>
                         </div>
 
-                        <div className='col-md-4 mb-3'>
-                            <div className='count bg-warning rounded px-3'>
+                        <div className='col-md-6 mb-3'>
+                            <div className='count bg-secondary rounded px-3'>
                             <div>
-                                    <p className='titledark'>Initiation <br/> <span className='figuredark'>{summary.initiation}</span></p>
+                                    <p className='title'>Not Started <br/> <span className='figure'>{summary.notstarted_percent}%</span></p>
 
                                    
                                 </div>
 
-                                <i className='fa fa-clock icontwo text-dark'></i>
+                                <i className='fa fa-clock icontwo text-light'></i>
                                 
                               
                             </div>
@@ -191,42 +191,30 @@ function Dashboard(){
 
                         
 
-                        <div className='col-md-4 mb-3'>
-                            <div className='count bg-info rounded px-3'>
-
-                            <div>
-                                    <p className='title'>Planning <br/> <span className='figure'>{summary.planning}</span></p>
-
-                                   
-                                </div>
-
-                                <i className='fa fa-pen icontwo text-light'></i>
-                                
-                            </div>
-                        </div>
+                       
                     </div>
 
 
 
                     <div className='row'>
-                        <div className='col-md-4 mb-3'>
-                            <div className='count bg-primary rounded px-3'>
+                        <div className='col-md-6 mb-3'>
+                            <div className='count bg-warning rounded px-3'>
 
                                 <div>
-                                    <p className='title'>Execution <br/> <span className='figure'>{summary.execution}</span></p>
+                                    <p className='titledark'>On Time <br/> <span className='figuredark'>{summary.ontime_percent}%</span></p>
 
                                    
                                 </div>
 
-                                <i className='fa fa-gear icontwo text-light'></i>
+                                <i className='fa fa-gear icontwo text-dark'></i>
                                 
                             </div>
                         </div>
 
-                        <div className='col-md-4 mb-3'>
+                        <div className='col-md-6 mb-3'>
                             <div className='count bg-success rounded px-3'>
                             <div>
-                                    <p className='title'>Completed <br/> <span className='figure'>{summary.completed}</span></p>
+                                    <p className='title'>Completed <br/> <span className='figure'>{summary.complete_percent}%</span></p>
 
                                    
                                 </div>
@@ -253,31 +241,18 @@ function Dashboard(){
 
                     <div className='row card-body'>
                         <div className='col-md-6'>
-                        <div className='form-group'>
-                                        <div className='labeldiv'>
-
-                                            <p>Overdue </p>
-                                            <p>{summary.overdue_percent}%</p>
-                                        </div> 
-                                        {/* <input className='w-100' type="range" value="20" /> */}
-
-
-                                        <progress className='w-100 overdue' value={summary.overdue_percent} max="100"></progress>
-
-                                        
-
-                                    </div>
+                       
 
                                     <div className='form-group'>
                                     <div className='labeldiv'>
 
                                             <p>Initiation</p>
-                                            <p>{summary.initiation_percent}%</p>
+                                            <p>{summary.initiation}</p>
                                             </div> 
                                         {/* <input className='w-100' type="range" value="20" /> */}
 
 
-                                        <progress className='w-100 pending' value={summary.initiation_percent} max="100"></progress>
+                                        <progress className='w-100 pending' value={summary.initiation} max={summary.total}></progress>
 
                                         
 
@@ -287,12 +262,12 @@ function Dashboard(){
                                     <div className='labeldiv'>
 
                                         <p>Planning</p>
-                                        <p>{summary.planning_percent}%</p>
+                                        <p>{summary.planning}</p>
 </div> 
                                         {/* <input className='w-100' type="range" value="20" /> */}
 
 
-                                        <progress className='w-100 completed' value={summary.planning_percent} max="100"></progress>
+                                        <progress className='w-100 completed' value={summary.planning} max={summary.total}></progress>
 
                                         
 
@@ -308,12 +283,12 @@ function Dashboard(){
                                         <div className='labeldiv'>
 
                                             <p>Execution</p>
-                                            <p>{summary.execution_percent}%</p>
+                                            <p>{summary.execution}</p>
                                         </div> 
                                         {/* <input className='w-100' type="range" value="20" /> */}
 
 
-                                        <progress className='w-100 execution' value={summary.execution_percent} max="100"></progress>
+                                        <progress className='w-100 execution' value={summary.execution} max={summary.total}></progress>
 
                                         
 
@@ -322,13 +297,13 @@ function Dashboard(){
                                     <div className='form-group'>
                                     <div className='labeldiv'>
 
-                                            <p>Completed</p>
-                                            <p>{summary.completed_percent}%</p>
+                                            <p>Done</p>
+                                            <p>{summary.completed}</p>
                                             </div> 
                                         {/* <input className='w-100' type="range" value="20" /> */}
 
 
-                                        <progress className='w-100 complete' value={summary.completed_percent} max="100"></progress>
+                                        <progress className='w-100 complete' value={summary.completed} max={summary.total}></progress>
 
                                         
 
