@@ -7,12 +7,13 @@ import { Link } from 'react-router-dom';
 import logo from '../edo.png';
 import { auth } from "../firebase";
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 
 function Dashboard(){
 
     const[mdaname, setMdaName] = useState("");
-    
+    const[summary, setSummary] = useState("");
 
     React.useEffect(()=>{
         var docId = localStorage.getItem("mdasDocumentId");
@@ -22,11 +23,32 @@ function Dashboard(){
         }
         else{
             setMdaName(localStorage.getItem("mdasName"));
+            
         }
      
 
      
     },[]);
+
+
+    useEffect(() => {
+        console.log('working');
+
+        if(mdaname != ""){
+        
+               axios.get(`https://office.laurenparkerway.com/api/mda/summary?mda=${mdaname}`)
+                .then(response => {
+                 
+                    setSummary(response.data);
+                  console.log('fetched');
+                  console.log(response.data);
+                    console.log(response.data);
+                })
+                .catch(error => {
+                  console.log(error);
+                });
+            }
+      }, [mdaname]);
 
 
     const navigate = useNavigate();
@@ -82,12 +104,12 @@ function Dashboard(){
 
                     <hr className='line' />
 
-                        <Link className='slidelink ml-3 py-5 font-weight-bold' to={'/dashboard'} ><i className='fa fa-bar-chart icons px-2'></i>Dashboard</Link>
+                        <Link className='slidelink ml-3 py-5 font-weight-bold' to='/dashboard' ><i className='fa fa-bar-chart icons px-2'></i>Dashboard</Link>
 
                         <hr className='line' />
 
 
-                        <Link className='slidelink ml-3 py-5' to={'/projects'} ><i className='fa fa-clock icons px-2'></i>Key Initiatives</Link>
+                        <Link className='slidelink ml-3 py-5' to='/projects' ><i className='fa fa-clock icons px-2'></i>Key Initiatives</Link>
 
                 <hr className='line' />
 
@@ -143,7 +165,7 @@ function Dashboard(){
                             <div className='count bg-danger rounded px-3'>
 
                                 <div>
-                                    <p className='title'>Overdue Projects <br/> <span className='figure'>20</span></p>
+                                    <p className='title'>Overdue <br/> <span className='figure'>{summary.overdue}</span></p>
 
                                    
                                 </div>
@@ -156,7 +178,7 @@ function Dashboard(){
                         <div className='col-md-4 mb-3'>
                             <div className='count bg-warning rounded px-3'>
                             <div>
-                                    <p className='titledark'>Pending Projects <br/> <span className='figuredark'>5</span></p>
+                                    <p className='titledark'>Initiation <br/> <span className='figuredark'>{summary.initiation}</span></p>
 
                                    
                                 </div>
@@ -170,18 +192,53 @@ function Dashboard(){
                         
 
                         <div className='col-md-4 mb-3'>
-                            <div className='count bg-success rounded px-3'>
+                            <div className='count bg-info rounded px-3'>
 
                             <div>
-                                    <p className='title'>Completed Projects <br/> <span className='figure'>10</span></p>
+                                    <p className='title'>Planning <br/> <span className='figure'>{summary.planning}</span></p>
+
+                                   
+                                </div>
+
+                                <i className='fa fa-pen icontwo text-light'></i>
+                                
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <div className='row'>
+                        <div className='col-md-4 mb-3'>
+                            <div className='count bg-primary rounded px-3'>
+
+                                <div>
+                                    <p className='title'>Execution <br/> <span className='figure'>{summary.execution}</span></p>
+
+                                   
+                                </div>
+
+                                <i className='fa fa-gear icontwo text-light'></i>
+                                
+                            </div>
+                        </div>
+
+                        <div className='col-md-4 mb-3'>
+                            <div className='count bg-success rounded px-3'>
+                            <div>
+                                    <p className='title'>Completed <br/> <span className='figure'>{summary.completed}</span></p>
 
                                    
                                 </div>
 
                                 <i className='fa fa-check icontwo text-light'></i>
                                 
+                              
                             </div>
                         </div>
+
+                        
+
                     </div>
 
 
@@ -191,24 +248,21 @@ function Dashboard(){
 
 
 
-                    <div className='row summary'>
+                <div className='summary card'>
+                <h4 className='card-header text-center'>Initiatives  Summary</h4>
+
+                    <div className='row card-body'>
                         <div className='col-md-6'>
-                            <div className='card'>
-                                <h4 className='card-header'>Project Summary</h4>
-
-                                <div className='card-body'>
-
-
-                                    <div className='form-group'>
+                        <div className='form-group'>
                                         <div className='labeldiv'>
 
-                                            <p>Overdue Projects</p>
-                                            <p>20%</p>
+                                            <p>Overdue </p>
+                                            <p>{summary.overdue_percent}%</p>
                                         </div> 
                                         {/* <input className='w-100' type="range" value="20" /> */}
 
 
-                                        <progress className='w-100 overdue' value="20" max="100"></progress>
+                                        <progress className='w-100 overdue' value={summary.overdue_percent} max="100"></progress>
 
                                         
 
@@ -217,13 +271,13 @@ function Dashboard(){
                                     <div className='form-group'>
                                     <div className='labeldiv'>
 
-                                            <p>Pending Projects</p>
-                                            <p>60%</p>
+                                            <p>Initiation</p>
+                                            <p>{summary.initiation_percent}%</p>
                                             </div> 
                                         {/* <input className='w-100' type="range" value="20" /> */}
 
 
-                                        <progress className='w-100 pending' value="60" max="100"></progress>
+                                        <progress className='w-100 pending' value={summary.initiation_percent} max="100"></progress>
 
                                         
 
@@ -232,23 +286,63 @@ function Dashboard(){
                                     <div className='form-group'>
                                     <div className='labeldiv'>
 
-                                        <p>Completed Projects</p>
-                                        <p>10%</p>
+                                        <p>Planning</p>
+                                        <p>{summary.planning_percent}%</p>
 </div> 
                                         {/* <input className='w-100' type="range" value="20" /> */}
 
 
-                                        <progress className='w-100 completed' value="10" max="100"></progress>
+                                        <progress className='w-100 completed' value={summary.planning_percent} max="100"></progress>
+
+                                        
+
+                                    
+
+                                </div>
+
+                        </div>
+
+                        <div className='col-md-6'>
+
+                        <div className='form-group'>
+                                        <div className='labeldiv'>
+
+                                            <p>Execution</p>
+                                            <p>{summary.execution_percent}%</p>
+                                        </div> 
+                                        {/* <input className='w-100' type="range" value="20" /> */}
+
+
+                                        <progress className='w-100 execution' value={summary.execution_percent} max="100"></progress>
 
                                         
 
                                     </div>
 
-                                </div>
-                            </div>
-                        </div>
+                                    <div className='form-group'>
+                                    <div className='labeldiv'>
 
+                                            <p>Completed</p>
+                                            <p>{summary.completed_percent}%</p>
+                                            </div> 
+                                        {/* <input className='w-100' type="range" value="20" /> */}
+
+
+                                        <progress className='w-100 complete' value={summary.completed_percent} max="100"></progress>
+
+                                        
+
+                                    </div>
+
+
+                        </div>
                     </div>
+                </div>
+
+
+
+
+                   
             
             </div>
 
