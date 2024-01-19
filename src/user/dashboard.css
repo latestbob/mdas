@@ -266,3 +266,48 @@ tbody{
     font-weight: bold;
 }
 
+.rounded{
+  border-radius: 15px;
+}
+
+.counttwo{
+  height: 200px;
+  background-color: #E3F2E5;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+}
+
+.mainhead{
+  font-size:15px;
+  text-align: center;
+  font-weight: 700;
+}
+
+.viewflex{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+ align-items: center;
+}
+
+.maincolor{
+  color: rgb(41, 61, 52);
+  font-size:14px;
+  font-weight: bold;
+  
+}
+
+.completion{
+  background-color: rgb(41, 61, 52);
+  color:white;
+  font-size:14px;
+}
+
+.completion:hover{
+  background-color: rgb(41, 61, 52);
+  color:white;
+  font-size:15px;
+}

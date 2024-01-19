@@ -33,27 +33,27 @@ function Login(){
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
       console.log("Signed in as:", user);
+
+      localStorage.setItem("authid", user.uid);
   
       // Now, let's query the Firestore collection
-      const mdasCollection = collection(db, "mdas");
-      const q = query(mdasCollection, where("email", "==", user.email));
+    //   const mdasCollection = collection(db, "mdas");
+    //   const q = query(mdasCollection, where("email", "==", user.email));
   
-      const querySnapshot = await getDocs(q);
+    //   const querySnapshot = await getDocs(q);
   
-      if (!querySnapshot.empty) {
-        // Assuming there's only one matching document, you can access it like this:
-        const document = querySnapshot.docs[0].data();
+    //   if (!querySnapshot.empty) {
+        
+    //     const document = querySnapshot.docs[0].data();
   
-        // Store relevant fields in local storage
-        localStorage.setItem("mdasDocumentId", querySnapshot.docs[0].id);
-        localStorage.setItem("mdasName", document.name);
-        localStorage.setItem("mdasLeader", document.leader);
-        localStorage.setItem("email",document.email);
-        // Add more fields as needed
-      }
+    //     localStorage.setItem("mdasDocumentId", querySnapshot.docs[0].id);
+    //     localStorage.setItem("mdasName", document.name);
+    //     localStorage.setItem("mdasLeader", document.leader);
+       
+    //   }
   
       // Continue with your navigation logic
-      navigate('/dashboard');
+      navigate('/executive/dashboard');
     } catch (error) {
       const errorCode = error.code;
       const errorMessage = error.message;
