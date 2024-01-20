@@ -101,6 +101,51 @@ function UniqueDashboard(){
           });
       };
 
+
+
+      function getStatusColor(stage) {
+        switch (stage) {
+          case 'Late':
+            return 'bg-danger text-light';
+          case 'Not Started':
+            return 'bg-secondary text-light';
+
+            case 'On Time':
+            return 'bg-warning text-dark';
+
+            case 'Completed':
+            return 'bg-success text-light';
+
+            
+          // Add more cases for other stages if needed
+          default:
+            return 'bg-primary'; // Default color for unknown stages
+        }
+      }
+
+
+
+    function getBadgeColor(stage) {
+        switch (stage) {
+          case 'Initiation':
+            return 'bg-warning text-dark';
+          case 'Planning':
+            return 'bg-info text-light';
+
+            case 'Execution':
+            return 'bg-primary text-light';
+
+            case 'Completed':
+            return 'bg-success text-light';
+
+            case 'Overdue':
+            return 'bg-danger text-light';
+          // Add more cases for other stages if needed
+          default:
+            return 'bg-secondary'; // Default color for unknown stages
+        }
+      }
+
     return (
 
         
@@ -313,13 +358,15 @@ function UniqueDashboard(){
                                 
                               
                                 <td>
-                                <span>{m.stage}</span>
+                                <span className={`badge ${getBadgeColor(m.stage)}`}>{m.stage}</span>
                                 </td>
 
                                 <td>
-                                <span>{m.status}</span>
+                                <span className={`badge ${getStatusColor(m.status)}`}>{m.status}</span>
                                 </td>
                                 <td>
+
+                                    {m.status == 'Late' ? <button className='btn btn-sm btn-danger'>Flag</button> : ''}
                                    
                                 </td>
 
