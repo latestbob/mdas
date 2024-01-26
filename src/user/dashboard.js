@@ -165,7 +165,7 @@ function Dashboard(){
                             <div className='count bg-danger rounded px-3'>
 
                                 <div>
-                                    <p className='title'>Late <br/> <span className='figure'>{summary.late_percent}%</span></p>
+                                    <p className='title'>Late <br/> <span className='figure'>{summary.late_percent && summary.late_percent.toFixed(2)}%</span></p>
 
                                    
                                 </div>
@@ -178,7 +178,7 @@ function Dashboard(){
                         <div className='col-md-6 mb-3'>
                             <div className='count bg-secondary rounded px-3'>
                             <div>
-                                    <p className='title'>Not Started <br/> <span className='figure'>{summary.notstarted_percent}%</span></p>
+                                    <p className='title'>Not Started <br/> <span className='figure'>{summary.notstarted_percent && summary.notstarted_percent.toFixed(2)}%</span></p>
 
                                    
                                 </div>
@@ -201,7 +201,7 @@ function Dashboard(){
                             <div className='count bg-warning rounded px-3'>
 
                                 <div>
-                                    <p className='titledark'>On Time <br/> <span className='figuredark'>{summary.ontime_percent}%</span></p>
+                                    <p className='titledark'>On Time <br/> <span className='figuredark'>{summary.ontime_percent && summary.ontime_percent.toFixed(2)}%</span></p>
 
                                    
                                 </div>
@@ -214,7 +214,7 @@ function Dashboard(){
                         <div className='col-md-6 mb-3'>
                             <div className='count bg-success rounded px-3'>
                             <div>
-                                    <p className='title'>Completed <br/> <span className='figure'>{summary.complete_percent}%</span></p>
+                                    <p className='title'>Completed <br/> <span className='figure'>{summary.complete_percent && summary.complete_percent.toFixed(2)}%</span></p>
 
                                    
                                 </div>
