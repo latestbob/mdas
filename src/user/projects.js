@@ -10,7 +10,7 @@ import { auth } from "../firebase";
 import { useState , useEffect} from 'react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
-
+import moment from 'moment';
 
 function Project(){
 
@@ -444,7 +444,7 @@ function Project(){
                                         <td>{m.objectives}</td>
                                 <td>{m.initiative}</td>
                                 <td>{m.outcome}</td>
-                                <td>{m.date}</td>
+                                <td>{moment(m.date).format('DD/MM/YYYY')}</td>
                                 <td>{m.budget}</td>
                                 <td>{m.owner}</td>
                                 <td>{m.support}</td>
@@ -549,7 +549,7 @@ function Project(){
                                 }} value={statusEdit} disabled={statusEdit === 'Late'} className='form-control' required>
                                     <option value="">Choose Status</option>
 
-                                    
+                                    <option value="Late">Late</option>
                                     {statusOptions.map((option) => (
                                         <option key={option} value={option}>
                                             {option}
@@ -632,13 +632,12 @@ function Project(){
                             <div className='col-md-6'>
                                 <label>Objective</label>
 
-                                <select onChange={function(e){
+                                
+
+                                <textarea  onChange={function(e){
                                     setObjectives(e.target.value);
-                                }} value={objectives} className='form-control'required>
-                                    <option value="">Choose An Objective</option>
-                                    <option value="Improve access to healthcare services" >Improve access to healthcare services</option>
-                                    <option value="Reduce out of pocket spending" >Reduce out of pocket spending</option>
-                                </select>
+                                }} value={objectives} className='form-control'row="5"> </textarea>
+
                             </div>
 
                             <div className='col-md-6'>
@@ -654,9 +653,9 @@ function Project(){
                         <div className='form-group row'>
                             <div className='col-md-6'>
                                 <label>Expected Outcome</label>
-                                <input onChange={function(e){
+                                <textarea row="5" onChange={function(e){
                                     setOutcome(e.target.value);
-                                }}  type="text"value={outcome} className='form-control'placeholder='Expected Outcome'required/>
+                                }}  type="text"value={outcome} className='form-control'placeholder='Expected Outcome'required> </textarea>
 
                                 
                             </div>
