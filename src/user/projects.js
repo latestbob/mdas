@@ -11,6 +11,9 @@ import { useState , useEffect} from 'react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import moment from 'moment';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css'; // Import the styles
+
 
 function Project(){
 
@@ -392,8 +395,8 @@ function Project(){
 
                         <thead className=''>
                             <tr>
-                                <th>Objective</th>
-                                <th>Initiative</th>
+                                {/* <th>Objective</th> */}
+                                <th>Key Initiatives</th>
                                 <th>Expected Outcome</th>
                                 <th>Estimated Completion Date</th>
                                 <th>Estimated Budget (NGN)</th>
@@ -441,7 +444,7 @@ function Project(){
                         {mdasInitiatives && mdasInitiatives.map((m, index) => (
                             // Your rendering logic for each item goes here
                             <tr key={index}>
-                                        <td>{m.objectives}</td>
+                                        {/* <td>{m.objectives}</td> */}
                                 <td>{m.initiative}</td>
                                 <td>{m.outcome}</td>
                                 <td>{moment(m.date).format('DD/MM/YYYY')}</td>
@@ -637,6 +640,8 @@ function Project(){
                                 <textarea  onChange={function(e){
                                     setObjectives(e.target.value);
                                 }} value={objectives} className='form-control'row="5"> </textarea>
+
+                                
 
                             </div>
 
