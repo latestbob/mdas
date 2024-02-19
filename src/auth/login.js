@@ -23,13 +23,16 @@ function Login(){
 
    const[email, setEmail] = useState("");
    const[message, setMessage] = useState("");
+   const[isLoading, setLoading] = useState(false);
 
 
    async function handleSignIn(e) {
     e.preventDefault();
+   
     setShowError(false);
   
     try {
+        setLoading(true);
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
       console.log("Signed in as:", user);
@@ -47,14 +50,17 @@ function Login(){
         // Store relevant fields in local storage
         localStorage.setItem("mdasDocumentId", querySnapshot.docs[0].id);
         localStorage.setItem("mdasName", document.name);
-        localStorage.setItem("mdasLeader", document.leader);
+        localStorage.setItem("title", document.title);
         localStorage.setItem("email",document.email);
+        localStorage.setItem("type",document.type);
         // Add more fields as needed
       }
   
       // Continue with your navigation logic
+      setLoading(false);
       navigate('/dashboard');
     } catch (error) {
+        setLoading(false);
       const errorCode = error.code;
       const errorMessage = error.message;
       console.error("Error signing in:", errorCode, errorMessage);
@@ -114,7 +120,7 @@ function Login(){
                    
                         <br/>
                     <div className='text-center mt-3'>
-                <button type="submit"className='btn btn-success w-100 btn-sm submit py-2'>Go To Dashboard</button>
+                <button type="submit"className='btn btn-success w-100 btn-sm submit py-2'>{isLoading ? 'Loading.....' : 'Go To Dashboard'}</button>
 
                 </div>
 

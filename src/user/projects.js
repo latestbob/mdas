@@ -70,6 +70,8 @@ function Project(){
     const[idEdit, setIdEdit] = useState("");
     const[statusEdit, setStatusEdit] = useState("");
 
+    const[check, setChecked] = useState(false);
+
 
 
     useEffect(() => {
@@ -122,7 +124,8 @@ function Project(){
 
             localStorage.removeItem("mdasDocumentId");
             localStorage.removeItem("mdasName");
-            localStorage.removeItem("mdasLeader");
+            localStorage.removeItem("title");
+            localStorage.removeItem("type");
             localStorage.removeItem("email");
 
             navigate('/');
@@ -161,6 +164,11 @@ function Project(){
     // update 
 
 
+    const[updatedValue, setUpdateValues] = useState(null);
+    const[changeId, setChangeId] = useState(0);
+
+
+    const[comment, setComment] = useState("");
    
 
 
@@ -187,15 +195,21 @@ function Project(){
             if(response.data.status == 200){
                 console.log(response.data.message);
 
-                Swal.fire({
-                    position: "top-end",
-                    icon: "success",
-                    title: "Initiatives added successfully",
-                    showConfirmButton: false,
-                    timer: 1500
-                  });
+                // Swal.fire({
+                //     position: "top-end",
+                //     icon: "success",
+                //     title: "Initiatives added successfully",
+                //     showConfirmButton: false,
+                //     timer: 1500
+                //   });
 
-                  window.location.reload();
+                //   window.location.reload();
+
+                alert('Initiative created successfully');
+             setTimeout(() => {
+               window.location.href = '/projects';
+             }, 1000); 
+    
     
                 //window.location.href = 'https://auth.nelnet.com/Account/Login?ReturnUrl=%2Fconnect%2Fauthorize%2Fcallback%3Fresponse_type%3Dcode%26client_id%3Dmma%26state%3Da19PMjBIZEFFbC5SbUIuNDNuNXdJX29NTXZaU2lZeH5TS0l1d0pjRXFySU96semicolon%25252Fdashboard%26redirect_uri%3Dhttps%253A%252F%252Fsecure.nelnet.com%26scope%3Dopenid%2520offline_access%2520mma.api.read%2520mma.api.write%26code_challenge%3DrBGHOu1mH2Ol4dy6tCOUfJpd2g4oqZ9n6zbc8PmJXqE%26code_challenge_method%3DS256%26nonce%3Da19PMjBIZEFFbC5SbUIuNDNuNXdJX29NTXZaU2lZeH5TS0l1d0pjRXFySU96%26nds_client_id%3D1%26nds_application_id%3D1%26pid%3D_PENDO_T_vHYTKtaYEKy';
             }
@@ -249,6 +263,45 @@ function Project(){
         
     }
 
+
+    async function handleUpdatePrimary(e){
+        e.preventDefault();
+    
+        try {
+            const response = await axios.put('https:/office.laurenparkerway.com/api/change', {
+             id:idEdit,  
+            date:dateEdit,
+            budget:budgetEdit,
+            changer_email:localStorage.getItem('email'),
+            changer_name:localStorage.getItem('title'),
+          
+            stage:stageEdit,
+            status:statusEdit,
+            });
+        
+            // Handle success
+            console.log('Data sent:', response.data);
+    
+            if(response.data){
+                //console.log(response.data.message);
+
+                alert('Updates have been sent for approval.');
+             setTimeout(() => {
+               window.location.href = '/projects';
+             }, 1000); 
+
+                  
+    
+                //window.location.href = 'https://auth.nelnet.com/Account/Login?ReturnUrl=%2Fconnect%2Fauthorize%2Fcallback%3Fresponse_type%3Dcode%26client_id%3Dmma%26state%3Da19PMjBIZEFFbC5SbUIuNDNuNXdJX29NTXZaU2lZeH5TS0l1d0pjRXFySU96semicolon%25252Fdashboard%26redirect_uri%3Dhttps%253A%252F%252Fsecure.nelnet.com%26scope%3Dopenid%2520offline_access%2520mma.api.read%2520mma.api.write%26code_challenge%3DrBGHOu1mH2Ol4dy6tCOUfJpd2g4oqZ9n6zbc8PmJXqE%26code_challenge_method%3DS256%26nonce%3Da19PMjBIZEFFbC5SbUIuNDNuNXdJX29NTXZaU2lZeH5TS0l1d0pjRXFySU96%26nds_client_id%3D1%26nds_application_id%3D1%26pid%3D_PENDO_T_vHYTKtaYEKy';
+            }
+          } catch (error) {
+            // Handle error
+            console.error('Error:', error);
+          }
+        
+    }
+
+
     function getBadgeColor(stage) {
         switch (stage) {
           case 'Initiation':
@@ -297,6 +350,11 @@ function Project(){
       stageEdit === 'Initiation' || stageEdit === 'Planning'
       ? ['Not Started']
       : ['On Time', 'Completed'];
+
+
+
+
+     
   
 
     return (
@@ -399,7 +457,7 @@ function Project(){
                             <tr>
                                 {/* <th>Objective</th> */}
                                 <th>Key Initiatives</th>
-                                <th>Expected Outcome</th>
+                                {/* <th>Expected Outcome</th> */}
                                 <th>Estimated Completion Date</th>
                                 <th>Estimated Budget (NGN)</th>
                                 <th>Owner</th>
@@ -407,6 +465,7 @@ function Project(){
                                 <th>Stage</th>
                                 <th>Status</th>
                                 <th>Action</th>
+                                {localStorage.getItem('type') == 'secondary' && <th>Updates</th> }
                             </tr>
 
                         </thead>
@@ -448,7 +507,7 @@ function Project(){
                             <tr key={index}>
                                         {/* <td>{m.objectives}</td> */}
                                 <td>{m.initiative}</td>
-                                <td>{m.outcome}</td>
+                                {/* <td>{m.outcome}</td> */}
                                 <td>{moment(m.date).format('DD/MM/YYYY')}</td>
                                 <td>{m.budget}</td>
                                 <td>{m.owner}</td>
@@ -470,6 +529,189 @@ function Project(){
                                 }}  className='btn btn-sm btn-warning text-dark'type="button"data-toggle="modal" data-target={`#exampleModalLong${index}`}>Edit</a>
                                 </td>
 
+                                {localStorage.getItem('type') == 'secondary' && <td>
+                                    {m.flagged == 'pending' && <button onClick={async function(e){
+                                        e.preventDefault();
+
+                                        try {
+                                            const response = await axios.get(`https://office.laurenparkerway.com/api/changes?id=${m.id}`);
+                                        
+                                            // Handle success
+                                            console.log('Data sent:', response.data);
+                                    
+                                            if(response.data){
+                                                //console.log(response.data.message);
+                                
+                                               setUpdateValues(response.data);
+                                
+                                                  
+                                    
+                                                //window.location.href = 'https://auth.nelnet.com/Account/Login?ReturnUrl=%2Fconnect%2Fauthorize%2Fcallback%3Fresponse_type%3Dcode%26client_id%3Dmma%26state%3Da19PMjBIZEFFbC5SbUIuNDNuNXdJX29NTXZaU2lZeH5TS0l1d0pjRXFySU96semicolon%25252Fdashboard%26redirect_uri%3Dhttps%253A%252F%252Fsecure.nelnet.com%26scope%3Dopenid%2520offline_access%2520mma.api.read%2520mma.api.write%26code_challenge%3DrBGHOu1mH2Ol4dy6tCOUfJpd2g4oqZ9n6zbc8PmJXqE%26code_challenge_method%3DS256%26nonce%3Da19PMjBIZEFFbC5SbUIuNDNuNXdJX29NTXZaU2lZeH5TS0l1d0pjRXFySU96%26nds_client_id%3D1%26nds_application_id%3D1%26pid%3D_PENDO_T_vHYTKtaYEKy';
+                                            }
+                                          } catch (error) {
+                                            // Handle error
+                                            console.error('Error:', error);
+                                          }
+                                        
+                                       
+                                    }} type="button" data-toggle="modal" data-target={`#exampleModal${index}`} className='badge badge-info text-light font-weight-bold borderless'>Awaiting Approval</button>}
+                                </td> }
+                                
+
+                                <div class="modal fade" id={`exampleModal${index}`} tabindex="-1" role="dialog" aria-labelledby={`exampleModalLabel${index}`}  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">{m.initiative}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+          <table className='table table-striped borderless'>
+              <thead>
+                  <tr>
+                      <th>Current Value</th>
+                      <th>Update Value</th>
+                  </tr>
+              </thead>
+              
+              <tbody>
+
+                  {
+                      updatedValue &&  updatedValue.date != m.date && <tr>
+                      <td>{m.date}</td>
+                      <td>{updatedValue && updatedValue.date}</td>
+                  </tr>
+                  }
+                  
+
+                  {
+                      updatedValue && updatedValue.budget != m.budget && <tr>
+                      <td>{m.budget}</td>
+                      <td>{updatedValue && updatedValue.budget}</td>
+                  </tr>
+                  }
+
+{
+                      updatedValue && updatedValue.stage != m.stage && <tr>
+                      <td>{m.stage}</td>
+                      <td>{updatedValue && updatedValue.stage}</td>
+                  </tr>
+                  }
+
+{
+                      updatedValue && updatedValue.status != m.status && <tr>
+                      <td>{m.status}</td>
+                      <td>{updatedValue && updatedValue.status}</td>
+                  </tr>
+                  }
+              </tbody>
+
+          </table>
+
+
+          <hr />
+
+<div className='form-group'>
+    <input onChange={function(){
+        setChecked(!check);
+    }} type="checkbox"checked={check} /> <span className='px-2'>Add Comments</span>
+
+    <br />
+
+   {
+       check && <textarea onChange={function(e){
+           setComment(e.target.value);
+       }} value={comment} className='form-control'row="5"placeholder='Enter Comments'></textarea>
+   } 
+
+</div>
+
+      </div>
+
+     
+      <div class="modal-footer">
+        <button onClick={ async function(e){
+            e.preventDefault();
+
+            
+        
+                try {
+                    const response = await axios.put('https://office.laurenparkerway.com/api/approve/change', {
+                     id:m.id,  
+                     comment:comment,  
+                    });
+                
+                    // Handle success
+                    console.log('Data sent:', response.data);
+            
+                    if(response.data){
+                        //console.log(response.data.message);
+        
+                        alert('Pending changes approved successfully');
+                     setTimeout(() => {
+                       window.location.href = '/projects';
+                     }, 1000); 
+        
+                          
+            
+                        //window.location.href = 'https://auth.nelnet.com/Account/Login?ReturnUrl=%2Fconnect%2Fauthorize%2Fcallback%3Fresponse_type%3Dcode%26client_id%3Dmma%26state%3Da19PMjBIZEFFbC5SbUIuNDNuNXdJX29NTXZaU2lZeH5TS0l1d0pjRXFySU96semicolon%25252Fdashboard%26redirect_uri%3Dhttps%253A%252F%252Fsecure.nelnet.com%26scope%3Dopenid%2520offline_access%2520mma.api.read%2520mma.api.write%26code_challenge%3DrBGHOu1mH2Ol4dy6tCOUfJpd2g4oqZ9n6zbc8PmJXqE%26code_challenge_method%3DS256%26nonce%3Da19PMjBIZEFFbC5SbUIuNDNuNXdJX29NTXZaU2lZeH5TS0l1d0pjRXFySU96%26nds_client_id%3D1%26nds_application_id%3D1%26pid%3D_PENDO_T_vHYTKtaYEKy';
+                    }
+                  } catch (error) {
+                    // Handle error
+                    console.error('Error:', error);
+                  }
+                
+              
+           
+        }} class="btn btn-success btn-sm" >Approve Changes</button>
+        <button 
+        
+        
+        onClick={ async function(e){
+            e.preventDefault();
+
+            
+        
+                try {
+                    const response = await axios.put('https://office.laurenparkerway.com/api/reject/change', {
+                     id:m.id,
+                     comment:comment,  
+                    
+                    });
+                
+                    // Handle success
+                    console.log('Data sent:', response.data);
+            
+                    if(response.data){
+                        //console.log(response.data.message);
+        
+                        alert('Changes rejected.');
+                     setTimeout(() => {
+                       window.location.href = '/projects';
+                        }, 1000); 
+            
+                          
+            
+                        //window.location.href = 'https://auth.nelnet.com/Account/Login?ReturnUrl=%2Fconnect%2Fauthorize%2Fcallback%3Fresponse_type%3Dcode%26client_id%3Dmma%26state%3Da19PMjBIZEFFbC5SbUIuNDNuNXdJX29NTXZaU2lZeH5TS0l1d0pjRXFySU96semicolon%25252Fdashboard%26redirect_uri%3Dhttps%253A%252F%252Fsecure.nelnet.com%26scope%3Dopenid%2520offline_access%2520mma.api.read%2520mma.api.write%26code_challenge%3DrBGHOu1mH2Ol4dy6tCOUfJpd2g4oqZ9n6zbc8PmJXqE%26code_challenge_method%3DS256%26nonce%3Da19PMjBIZEFFbC5SbUIuNDNuNXdJX29NTXZaU2lZeH5TS0l1d0pjRXFySU96%26nds_client_id%3D1%26nds_application_id%3D1%26pid%3D_PENDO_T_vHYTKtaYEKy';
+                    }
+                  } catch (error) {
+                    // Handle error
+                    console.error('Error:', error);
+                  }
+                
+              
+           
+        }} 
+        
+        class="btn btn-danger btn-sm">Reject Changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
                                 <div class="modal fade" id={`exampleModalLong${index}`} tabindex="-1" role="dialog" aria-labelledby={`exampleModalLongTitle${index}`} aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
@@ -480,7 +722,7 @@ function Project(){
         </button>
       </div>
       <div class="modal-body">
-                    <form onSubmit={handleUpdate}>
+                    <form onSubmit={localStorage.getItem('type') == 'secondary' ? handleUpdate : handleUpdatePrimary}>
                        
 
 
@@ -506,25 +748,23 @@ function Project(){
                         </div>
 
 
-                        <div className='form-group row'>
+                        
                             
 
-                            <div className='col-md-6'>
-                                <label>Owner</label>
+                          
                                 <input onChange={function(e){
                                     setOwnerEdit(e.target.value);
-                                }} type="text"value={ownerEdit} className='form-control'placeholder='Asignee/Owner'required/>
-                            </div>
+                                }} type="hidden"value={ownerEdit} className='form-control'placeholder='Asignee/Owner'required/>
+           
 
-                            <div className='col-md-6'>
-                                <label>Supporting MDAs/Consultants</label>
+                            
                                 <input onChange={function(e){
                                     setSupportEdit(e.target.value);
-                                }} type="text"value={supportEdit} className='form-control'placeholder='Supporting MDAs/Consultants'required/>
+                                }} type="hidden"value={supportEdit} className='form-control'placeholder='Supporting MDAs/Consultants'required/>
 
                                 
-                            </div>
-                        </div>
+                            
+                       
 
                         <div className='form-group row'>
                             

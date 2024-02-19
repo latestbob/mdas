@@ -61,7 +61,8 @@ function Dashboard(){
 
             localStorage.removeItem("mdasDocumentId");
             localStorage.removeItem("mdasName");
-            localStorage.removeItem("mdasLeader");
+            localStorage.removeItem("title");
+            localStorage.removeItem("type");
             localStorage.removeItem("email");
 
             navigate('/');
@@ -155,7 +156,15 @@ function Dashboard(){
 
             <div className='col-md-9 full m-0 px-5 py-5'>
 
-                <h3 className='intro py-3'>Dashboard</h3>
+                <div className='flextop'>
+                    <h3 className='intro py-3'>Dashboard</h3>
+
+                    <div className='py-3'>
+                        <i className='fa fa-user text-secondary'></i> <span className='leader'>{localStorage.getItem("title")} </span>
+                    </div>
+                </div>
+
+                
 
 
                 {/* activity count */}

@@ -19,6 +19,13 @@
     border-radius: 100%;
 }
 
+.flextop{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items:flex-start;
+}
+
 .mdaname{
     font-size: 15px;
     font-weight: 700;
