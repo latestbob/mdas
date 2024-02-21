@@ -293,7 +293,10 @@ function Project(){
             if (responseData) {
                 console.log(responseData.message);
     
-                window.location.reload();
+                alert('Initiative Updated Successfully.');
+                setTimeout(() => {
+                    navigate('/projects', { replace: true });
+                }, 1000); 
     
                 // Uncomment the following code if you want to use Swal (SweetAlert)
                 // Swal.fire({
