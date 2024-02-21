@@ -258,14 +258,7 @@ function Project(){
                     window.location.reload(false);
                 }, 1000); 
     
-                // Uncomment the following code if you want to use Swal (SweetAlert)
-                // Swal.fire({
-                //     position: "top-end",
-                //     icon: "success",
-                //     title: "Initiative updated successfully",
-                //     showConfirmButton: false,
-                //     timer: 1500
-                // });
+               
             }
         } catch (error) {
             // Handle error
@@ -296,23 +289,29 @@ function Project(){
           });
       
           // Handle success
-          if (response.ok) {
-            const responseData = await response.json();
+
+          const responseData = await response.json();
+
+
+
+
+
+            // Handle success
             console.log('Data sent:', responseData);
-      
+    
             if (responseData) {
-              alert('Updates have been sent for approval.');
-              setTimeout(() => {
-                window.location.reload(false);
-              }, 1000);
+                console.log(responseData.message);
+    
+                alert('Updates has been sent for approval.');
+                setTimeout(() => {
+                    window.location.reload(false);
+                }, 1000); 
+    
+               
             }
-          } else {
-            // Handle non-successful response
-            console.error('Error:', response.status, response.statusText);
-          }
         } catch (error) {
-          // Handle network or other errors
-          console.error('Error:', error);
+            // Handle error
+            console.error('Error:', error);
         }
       }
 
@@ -652,7 +651,7 @@ function Project(){
 
      
       <div class="modal-footer">
-        <button onClick={ async function handleApproval(e) {
+        <button onClick={ async function (e) {
   e.preventDefault();
 
   try {
@@ -667,30 +666,37 @@ function Project(){
       }),
     });
 
-    // Handle success
-    if (response.ok) {
-      const responseData = await response.json();
-      console.log('Data sent:', responseData);
+    const responseData = await response.json();
 
-      if (responseData) {
-        alert('Pending changes approved successfully');
+
+
+
+
+    // Handle success
+    console.log('Data sent:', responseData);
+
+    if (responseData) {
+        console.log(responseData.message);
+
+        alert('Pending updates has been approved.');
         setTimeout(() => {
-          window.location.reload(false);
-        }, 1000);
-      }
-    } else {
-      // Handle non-successful response
-      console.error('Error:', response.status, response.statusText);
+            window.location.reload(false);
+        }, 1000); 
+
+       
     }
-  } catch (error) {
-    // Handle network or other errors
+} catch (error) {
+    // Handle error
     console.error('Error:', error);
-  }
-}} class="btn btn-success btn-sm" >Approve Changes</button>
+}
+
+}
+
+} class="btn btn-success btn-sm" >Approve Changes</button>
         <button 
         
         
-        onClick={ async function handleRejection(e) {
+        onClick={ async function (e) {
             e.preventDefault();
           
             try {
@@ -704,26 +710,32 @@ function Project(){
                   comment: comment,
                 }),
               });
-          
-              // Handle success
-              if (response.ok) {
-                const responseData = await response.json();
-                console.log('Data sent:', responseData);
-          
-                if (responseData) {
-                  alert('Changes rejected.');
-                  setTimeout(() => {
+
+              const responseData = await response.json();
+
+
+
+
+
+            // Handle success
+            console.log('Data sent:', responseData);
+    
+            if (responseData) {
+                console.log(responseData.message);
+    
+                alert('Pending update rejected.');
+                setTimeout(() => {
                     window.location.reload(false);
-                  }, 1000);
-                }
-              } else {
-                // Handle non-successful response
-                console.error('Error:', response.status, response.statusText);
-              }
-            } catch (error) {
-              // Handle network or other errors
-              console.error('Error:', error);
+                }, 1000); 
+    
+               
             }
+        } catch (error) {
+            // Handle error
+            console.error('Error:', error);
+        }
+          
+          
           }} 
         
         class="btn btn-danger btn-sm">Reject Changes</button>
