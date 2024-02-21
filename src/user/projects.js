@@ -222,46 +222,6 @@ function Project(){
     
 
 
-    // async function handleUpdate(e){
-    //     e.preventDefault();
-    
-    //     try {
-    //         const response = await axios.put('https:/office.laurenparkerway.com/api/update/initiative', {
-    //          id:idEdit,  
-    //         date:dateEdit,
-    //         budget:budgetEdit,
-    //         owner:ownerEdit,
-    //         support:supportEdit,
-    //         stage:stageEdit,
-    //         status:statusEdit,
-    //         });
-        
-    //         // Handle success
-    //         console.log('Data sent:', response.data);
-    
-    //         if(response.data){
-    //             console.log(response.data.message);
-
-    //             window.location.reload();
-
-    //             // Swal.fire({
-    //             //     position: "top-end",
-    //             //     icon: "success",
-    //             //     title: "Initiative updated successfully",
-    //             //     showConfirmButton: false,
-    //             //     timer: 1500
-    //             //   });
-
-                  
-    
-    //             //window.location.href = 'https://auth.nelnet.com/Account/Login?ReturnUrl=%2Fconnect%2Fauthorize%2Fcallback%3Fresponse_type%3Dcode%26client_id%3Dmma%26state%3Da19PMjBIZEFFbC5SbUIuNDNuNXdJX29NTXZaU2lZeH5TS0l1d0pjRXFySU96semicolon%25252Fdashboard%26redirect_uri%3Dhttps%253A%252F%252Fsecure.nelnet.com%26scope%3Dopenid%2520offline_access%2520mma.api.read%2520mma.api.write%26code_challenge%3DrBGHOu1mH2Ol4dy6tCOUfJpd2g4oqZ9n6zbc8PmJXqE%26code_challenge_method%3DS256%26nonce%3Da19PMjBIZEFFbC5SbUIuNDNuNXdJX29NTXZaU2lZeH5TS0l1d0pjRXFySU96%26nds_client_id%3D1%26nds_application_id%3D1%26pid%3D_PENDO_T_vHYTKtaYEKy';
-    //         }
-    //       } catch (error) {
-    //         // Handle error
-    //         console.error('Error:', error);
-    //       }
-        
-    // }
 
 
     async function handleUpdate(e) {
@@ -314,42 +274,47 @@ function Project(){
     }
 
 
-    async function handleUpdatePrimary(e){
+
+    async function handleUpdatePrimary(e) {
         e.preventDefault();
-    
+      
         try {
-            const response = await axios.put('https:/office.laurenparkerway.com/api/change', {
-             id:idEdit,  
-            date:dateEdit,
-            budget:budgetEdit,
-            changer_email:localStorage.getItem('email'),
-            changer_name:localStorage.getItem('title'),
-          
-            stage:stageEdit,
-            status:statusEdit,
-            });
-        
-            // Handle success
-            console.log('Data sent:', response.data);
-    
-            if(response.data){
-                //console.log(response.data.message);
-
-                alert('Updates have been sent for approval.');
-             setTimeout(() => {
-               window.location.href = '/projects';
-             }, 1000); 
-
-                  
-    
-                //window.location.href = 'https://auth.nelnet.com/Account/Login?ReturnUrl=%2Fconnect%2Fauthorize%2Fcallback%3Fresponse_type%3Dcode%26client_id%3Dmma%26state%3Da19PMjBIZEFFbC5SbUIuNDNuNXdJX29NTXZaU2lZeH5TS0l1d0pjRXFySU96semicolon%25252Fdashboard%26redirect_uri%3Dhttps%253A%252F%252Fsecure.nelnet.com%26scope%3Dopenid%2520offline_access%2520mma.api.read%2520mma.api.write%26code_challenge%3DrBGHOu1mH2Ol4dy6tCOUfJpd2g4oqZ9n6zbc8PmJXqE%26code_challenge_method%3DS256%26nonce%3Da19PMjBIZEFFbC5SbUIuNDNuNXdJX29NTXZaU2lZeH5TS0l1d0pjRXFySU96%26nds_client_id%3D1%26nds_application_id%3D1%26pid%3D_PENDO_T_vHYTKtaYEKy';
+          const response = await fetch('https:/office.laurenparkerway.com/api/change', {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              id: idEdit,
+              date: dateEdit,
+              budget: budgetEdit,
+              changer_email: localStorage.getItem('email'),
+              changer_name: localStorage.getItem('title'),
+              stage: stageEdit,
+              status: statusEdit,
+            }),
+          });
+      
+          // Handle success
+          if (response.ok) {
+            const responseData = await response.json();
+            console.log('Data sent:', responseData);
+      
+            if (responseData) {
+              alert('Updates have been sent for approval.');
+              setTimeout(() => {
+                window.location.reload(false);
+              }, 1000);
             }
-          } catch (error) {
-            // Handle error
-            console.error('Error:', error);
+          } else {
+            // Handle non-successful response
+            console.error('Error:', response.status, response.statusText);
           }
-        
-    }
+        } catch (error) {
+          // Handle network or other errors
+          console.error('Error:', error);
+        }
+      }
 
 
     function getBadgeColor(stage) {
@@ -490,8 +455,12 @@ function Project(){
                 <div className='flexdiv'>
                     <h3 className='intro py-3'>2024 Key Initiatives </h3>
 
-                    <button className='btn createbtn'type="button"data-toggle="modal" data-target="#exampleModalLong">Add New Initiative</button>
+                    {/* <button className='btn createbtn'type="button"data-toggle="modal" data-target="#exampleModalLong">Add New Initiative</button> */}
 
+                    <button className='btn createbtn'onClick={function(e){
+                        e.preventDefault();
+                        alert("You are not authorized to make this request");
+                    }}>Add New Initiative</button>
                 </div>
                 
 
@@ -596,7 +565,7 @@ function Project(){
                                 
                                                   
                                     
-                                                //window.location.href = 'https://auth.nelnet.com/Account/Login?ReturnUrl=%2Fconnect%2Fauthorize%2Fcallback%3Fresponse_type%3Dcode%26client_id%3Dmma%26state%3Da19PMjBIZEFFbC5SbUIuNDNuNXdJX29NTXZaU2lZeH5TS0l1d0pjRXFySU96semicolon%25252Fdashboard%26redirect_uri%3Dhttps%253A%252F%252Fsecure.nelnet.com%26scope%3Dopenid%2520offline_access%2520mma.api.read%2520mma.api.write%26code_challenge%3DrBGHOu1mH2Ol4dy6tCOUfJpd2g4oqZ9n6zbc8PmJXqE%26code_challenge_method%3DS256%26nonce%3Da19PMjBIZEFFbC5SbUIuNDNuNXdJX29NTXZaU2lZeH5TS0l1d0pjRXFySU96%26nds_client_id%3D1%26nds_application_id%3D1%26pid%3D_PENDO_T_vHYTKtaYEKy';
+                                              
                                             }
                                           } catch (error) {
                                             // Handle error
@@ -683,78 +652,79 @@ function Project(){
 
      
       <div class="modal-footer">
-        <button onClick={ async function(e){
-            e.preventDefault();
+        <button onClick={ async function handleApproval(e) {
+  e.preventDefault();
 
-            
-        
-                try {
-                    const response = await axios.put('https://office.laurenparkerway.com/api/approve/change', {
-                     id:m.id,  
-                     comment:comment,  
-                    });
-                
-                    // Handle success
-                    console.log('Data sent:', response.data);
-            
-                    if(response.data){
-                        //console.log(response.data.message);
-        
-                        alert('Pending changes approved successfully');
-                     setTimeout(() => {
-                       window.location.href = '/projects';
-                     }, 1000); 
-        
-                          
-            
-                        //window.location.href = 'https://auth.nelnet.com/Account/Login?ReturnUrl=%2Fconnect%2Fauthorize%2Fcallback%3Fresponse_type%3Dcode%26client_id%3Dmma%26state%3Da19PMjBIZEFFbC5SbUIuNDNuNXdJX29NTXZaU2lZeH5TS0l1d0pjRXFySU96semicolon%25252Fdashboard%26redirect_uri%3Dhttps%253A%252F%252Fsecure.nelnet.com%26scope%3Dopenid%2520offline_access%2520mma.api.read%2520mma.api.write%26code_challenge%3DrBGHOu1mH2Ol4dy6tCOUfJpd2g4oqZ9n6zbc8PmJXqE%26code_challenge_method%3DS256%26nonce%3Da19PMjBIZEFFbC5SbUIuNDNuNXdJX29NTXZaU2lZeH5TS0l1d0pjRXFySU96%26nds_client_id%3D1%26nds_application_id%3D1%26pid%3D_PENDO_T_vHYTKtaYEKy';
-                    }
-                  } catch (error) {
-                    // Handle error
-                    console.error('Error:', error);
-                  }
-                
-              
-           
-        }} class="btn btn-success btn-sm" >Approve Changes</button>
+  try {
+    const response = await fetch('https://office.laurenparkerway.com/api/approve/change', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        id: m.id,
+        comment: comment,
+      }),
+    });
+
+    // Handle success
+    if (response.ok) {
+      const responseData = await response.json();
+      console.log('Data sent:', responseData);
+
+      if (responseData) {
+        alert('Pending changes approved successfully');
+        setTimeout(() => {
+          window.location.reload(false);
+        }, 1000);
+      }
+    } else {
+      // Handle non-successful response
+      console.error('Error:', response.status, response.statusText);
+    }
+  } catch (error) {
+    // Handle network or other errors
+    console.error('Error:', error);
+  }
+}} class="btn btn-success btn-sm" >Approve Changes</button>
         <button 
         
         
-        onClick={ async function(e){
+        onClick={ async function handleRejection(e) {
             e.preventDefault();
-
-            
-        
-                try {
-                    const response = await axios.put('https://office.laurenparkerway.com/api/reject/change', {
-                     id:m.id,
-                     comment:comment,  
-                    
-                    });
-                
-                    // Handle success
-                    console.log('Data sent:', response.data);
-            
-                    if(response.data){
-                        //console.log(response.data.message);
-        
-                        alert('Changes rejected.');
-                     setTimeout(() => {
-                       window.location.href = '/projects';
-                        }, 1000); 
-            
-                          
-            
-                        //window.location.href = 'https://auth.nelnet.com/Account/Login?ReturnUrl=%2Fconnect%2Fauthorize%2Fcallback%3Fresponse_type%3Dcode%26client_id%3Dmma%26state%3Da19PMjBIZEFFbC5SbUIuNDNuNXdJX29NTXZaU2lZeH5TS0l1d0pjRXFySU96semicolon%25252Fdashboard%26redirect_uri%3Dhttps%253A%252F%252Fsecure.nelnet.com%26scope%3Dopenid%2520offline_access%2520mma.api.read%2520mma.api.write%26code_challenge%3DrBGHOu1mH2Ol4dy6tCOUfJpd2g4oqZ9n6zbc8PmJXqE%26code_challenge_method%3DS256%26nonce%3Da19PMjBIZEFFbC5SbUIuNDNuNXdJX29NTXZaU2lZeH5TS0l1d0pjRXFySU96%26nds_client_id%3D1%26nds_application_id%3D1%26pid%3D_PENDO_T_vHYTKtaYEKy';
-                    }
-                  } catch (error) {
-                    // Handle error
-                    console.error('Error:', error);
-                  }
-                
-              
-           
-        }} 
+          
+            try {
+              const response = await fetch('https://office.laurenparkerway.com/api/reject/change', {
+                method: 'PUT',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                  id: m.id,
+                  comment: comment,
+                }),
+              });
+          
+              // Handle success
+              if (response.ok) {
+                const responseData = await response.json();
+                console.log('Data sent:', responseData);
+          
+                if (responseData) {
+                  alert('Changes rejected.');
+                  setTimeout(() => {
+                    window.location.reload(false);
+                  }, 1000);
+                }
+              } else {
+                // Handle non-successful response
+                console.error('Error:', response.status, response.statusText);
+              }
+            } catch (error) {
+              // Handle network or other errors
+              console.error('Error:', error);
+            }
+          }} 
         
         class="btn btn-danger btn-sm">Reject Changes</button>
       </div>
