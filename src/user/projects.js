@@ -289,6 +289,11 @@ function Project(){
                     status: statusEdit,
                 }),
             });
+
+
+            if (!response.ok) {
+                throw new Error(`Request failed with status: ${response.status}`);
+              }
     
             // Parse JSON response
             const responseData = await response.json();
