@@ -222,45 +222,92 @@ function Project(){
     
 
 
-    async function handleUpdate(e){
+    // async function handleUpdate(e){
+    //     e.preventDefault();
+    
+    //     try {
+    //         const response = await axios.put('https:/office.laurenparkerway.com/api/update/initiative', {
+    //          id:idEdit,  
+    //         date:dateEdit,
+    //         budget:budgetEdit,
+    //         owner:ownerEdit,
+    //         support:supportEdit,
+    //         stage:stageEdit,
+    //         status:statusEdit,
+    //         });
+        
+    //         // Handle success
+    //         console.log('Data sent:', response.data);
+    
+    //         if(response.data){
+    //             console.log(response.data.message);
+
+    //             window.location.reload();
+
+    //             // Swal.fire({
+    //             //     position: "top-end",
+    //             //     icon: "success",
+    //             //     title: "Initiative updated successfully",
+    //             //     showConfirmButton: false,
+    //             //     timer: 1500
+    //             //   });
+
+                  
+    
+    //             //window.location.href = 'https://auth.nelnet.com/Account/Login?ReturnUrl=%2Fconnect%2Fauthorize%2Fcallback%3Fresponse_type%3Dcode%26client_id%3Dmma%26state%3Da19PMjBIZEFFbC5SbUIuNDNuNXdJX29NTXZaU2lZeH5TS0l1d0pjRXFySU96semicolon%25252Fdashboard%26redirect_uri%3Dhttps%253A%252F%252Fsecure.nelnet.com%26scope%3Dopenid%2520offline_access%2520mma.api.read%2520mma.api.write%26code_challenge%3DrBGHOu1mH2Ol4dy6tCOUfJpd2g4oqZ9n6zbc8PmJXqE%26code_challenge_method%3DS256%26nonce%3Da19PMjBIZEFFbC5SbUIuNDNuNXdJX29NTXZaU2lZeH5TS0l1d0pjRXFySU96%26nds_client_id%3D1%26nds_application_id%3D1%26pid%3D_PENDO_T_vHYTKtaYEKy';
+    //         }
+    //       } catch (error) {
+    //         // Handle error
+    //         console.error('Error:', error);
+    //       }
+        
+    // }
+
+
+    async function handleUpdate(e) {
         e.preventDefault();
     
         try {
-            const response = await axios.put('https:/office.laurenparkerway.com/api/update/initiative', {
-             id:idEdit,  
-            date:dateEdit,
-            budget:budgetEdit,
-            owner:ownerEdit,
-            support:supportEdit,
-            stage:stageEdit,
-            status:statusEdit,
+            const response = await fetch('https://office.laurenparkerway.com/api/update/initiative', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    id: idEdit,
+                    date: dateEdit,
+                    budget: budgetEdit,
+                    owner: ownerEdit,
+                    support: supportEdit,
+                    stage: stageEdit,
+                    status: statusEdit,
+                }),
             });
-        
-            // Handle success
-            console.log('Data sent:', response);
     
-            if(response.data){
-                console.log(response.data.message);
-
-                window.location.href = 'https://edostatemda.onrender.com/projects';
-
+            // Parse JSON response
+            const responseData = await response.json();
+    
+            // Handle success
+            console.log('Data sent:', responseData);
+    
+            if (responseData) {
+                console.log(responseData.message);
+    
+                window.location.reload();
+    
+                // Uncomment the following code if you want to use Swal (SweetAlert)
                 // Swal.fire({
                 //     position: "top-end",
                 //     icon: "success",
                 //     title: "Initiative updated successfully",
                 //     showConfirmButton: false,
                 //     timer: 1500
-                //   });
-
-                  
-    
-                //window.location.href = 'https://auth.nelnet.com/Account/Login?ReturnUrl=%2Fconnect%2Fauthorize%2Fcallback%3Fresponse_type%3Dcode%26client_id%3Dmma%26state%3Da19PMjBIZEFFbC5SbUIuNDNuNXdJX29NTXZaU2lZeH5TS0l1d0pjRXFySU96semicolon%25252Fdashboard%26redirect_uri%3Dhttps%253A%252F%252Fsecure.nelnet.com%26scope%3Dopenid%2520offline_access%2520mma.api.read%2520mma.api.write%26code_challenge%3DrBGHOu1mH2Ol4dy6tCOUfJpd2g4oqZ9n6zbc8PmJXqE%26code_challenge_method%3DS256%26nonce%3Da19PMjBIZEFFbC5SbUIuNDNuNXdJX29NTXZaU2lZeH5TS0l1d0pjRXFySU96%26nds_client_id%3D1%26nds_application_id%3D1%26pid%3D_PENDO_T_vHYTKtaYEKy';
+                // });
             }
-          } catch (error) {
+        } catch (error) {
             // Handle error
             console.error('Error:', error);
-          }
-        
+        }
     }
 
 
