@@ -237,12 +237,12 @@ function Project(){
             });
         
             // Handle success
-            console.log('Data sent:', response.data);
+            console.log('Data sent:', response);
     
-            if(response.data == 200){
+            if(response.data){
                 console.log(response.data.message);
 
-                window.location.href = '/projects';
+                window.location.href = 'https://edostatemda.onrender.com/projects';
 
                 // Swal.fire({
                 //     position: "top-end",
