@@ -295,7 +295,7 @@ function Project(){
     
                 alert('Initiative Updated Successfully.');
                 setTimeout(() => {
-                    navigate('/projects', { replace: true });
+                    window.location.reload(false);
                 }, 1000); 
     
                 // Uncomment the following code if you want to use Swal (SweetAlert)
