@@ -291,18 +291,16 @@ function Project(){
             });
 
 
-            if (!response.ok) {
-                throw new Error(`Request failed with status: ${response.status}`);
-              }
+           
     
             // Parse JSON response
-            const responseData = await response.json();
+            // const responseData = await response.json();
     
             // Handle success
-            console.log('Data sent:', responseData);
+          
     
-            if (responseData) {
-                console.log(responseData.message);
+            if (response.ok) {
+             const responseData = await response.json();
     
                 alert('Updates has been sent for approval.');
                 setTimeout(() => {
@@ -313,7 +311,7 @@ function Project(){
             }
         } catch (error) {
             // Handle error
-            console.error('Error:', error);
+            console.error('Error is :', error);
         }
     }
 
