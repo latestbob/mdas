@@ -2,7 +2,7 @@
 // import './App.css';
 import React from 'react';
 import {
-  BrowserRouter,
+  HashRouter,
   Routes,
   Route,
 } from "react-router-dom";
@@ -15,7 +15,7 @@ import Project from './user/projects';
 function App() {
   return (
     <>
-       <BrowserRouter>
+       <HashRouter>
     <Routes>
       <Route path="/" element={<Login />}/>
       <Route path="/dashboard" element={<Dashboard />}/>
@@ -33,7 +33,7 @@ function App() {
       
         
     </Routes>
-  </BrowserRouter>
+  </HashRouter>
 
 
     </>
