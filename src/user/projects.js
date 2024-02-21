@@ -239,18 +239,18 @@ function Project(){
             // Handle success
             console.log('Data sent:', response.data);
     
-            if(response.data.status == 200){
+            if(response.data == 200){
                 console.log(response.data.message);
 
-                window.location.reload();
+                window.location.href = '/projects';
 
-                Swal.fire({
-                    position: "top-end",
-                    icon: "success",
-                    title: "Initiative updated successfully",
-                    showConfirmButton: false,
-                    timer: 1500
-                  });
+                // Swal.fire({
+                //     position: "top-end",
+                //     icon: "success",
+                //     title: "Initiative updated successfully",
+                //     showConfirmButton: false,
+                //     timer: 1500
+                //   });
 
                   
     
