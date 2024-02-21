@@ -268,6 +268,52 @@ function Project(){
 
 
 
+
+
+    async function handleUpdateTwo(e) {
+        e.preventDefault();
+    
+        try {
+            const response = await fetch('https:/office.laurenparkerway.com/api/change', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    id: idEdit,
+                    date: dateEdit,
+                    budget: budgetEdit,
+                    changer_email: localStorage.getItem('email'),
+                    changer_name: localStorage.getItem('title'),
+                    stage: stageEdit,
+                    status: statusEdit,
+                }),
+            });
+    
+            // Parse JSON response
+            const responseData = await response.json();
+    
+            // Handle success
+            console.log('Data sent:', responseData);
+    
+            if (responseData) {
+                console.log(responseData.message);
+    
+                alert('Updates has been sent for approval.');
+                setTimeout(() => {
+                    window.location.reload(false);
+                }, 1000); 
+    
+               
+            }
+        } catch (error) {
+            // Handle error
+            console.error('Error:', error);
+        }
+    }
+
+
+
     async function handleUpdatePrimary(e) {
         e.preventDefault();
       
@@ -754,7 +800,7 @@ function Project(){
         </button>
       </div>
       <div class="modal-body">
-                    <form onSubmit={localStorage.getItem('type') == 'secondary' ? handleUpdate : handleUpdatePrimary}>
+                    <form onSubmit={localStorage.getItem('type') == 'secondary' ? handleUpdate : handleUpdateTwo}>
                        
 
 
