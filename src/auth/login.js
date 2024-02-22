@@ -3,7 +3,7 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 
 import './auth.css';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import logo from '../edo.png';
 import { auth, db } from "../firebase";
@@ -117,6 +117,15 @@ function Login(){
                         }} value={password} type="password"className='form-control py-4'placeholder='Enter Secured Password'required />
 
                     </div>
+
+                        <div className='text-center'>
+                            <Link to='/forgot-password' style={{
+                                color:"white",
+                                fontSize:"13px",
+                                fontWeight:"500",
+                            }}>Forgot Password</Link>
+
+                        </div>
                    
                         <br/>
                     <div className='text-center mt-3'>

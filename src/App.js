@@ -6,6 +6,7 @@ import {
   Routes,
   Route,
 } from "react-router-dom";
+import Forgot from './auth/forgot';
 
 import Login from './auth/login';
 import Help from './help';
@@ -22,6 +23,7 @@ function App() {
       <Route path="/projects" element={<Project />}/>
 
       <Route path="/help" element={<Help />}/>
+      <Route path="/forgot-password" element={<Forgot />}/>
       
 
 
