@@ -321,48 +321,34 @@ function Project(){
         e.preventDefault();
       
         try {
-          const response = await fetch('https:/office.laurenparkerway.com/api/change', {
-            method: 'PUT',
+          const response = await axios.put('https:/office.laurenparkerway.com/api/change', {
+            id: idEdit,
+            date: dateEdit,
+            budget: budgetEdit,
+            changer_email: localStorage.getItem('email'),
+            changer_name: localStorage.getItem('title'),
+            stage: stageEdit,
+            status: statusEdit,
+          }, {
             headers: {
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify({
-              id: idEdit,
-              date: dateEdit,
-              budget: budgetEdit,
-              changer_email: localStorage.getItem('email'),
-              changer_name: localStorage.getItem('title'),
-              stage: stageEdit,
-              status: statusEdit,
-            }),
+            mode: 'no-cors', // Set 'no-cors' mode
           });
       
-          // Handle success
-
-          const responseData = await response.json();
-
-
-
-
-
-            // Handle success
-            console.log('Data sent:', responseData);
-    
-            if (responseData) {
-                console.log(responseData.message);
-    
-                alert('Updates has been sent for approval.');
-                setTimeout(() => {
-                    window.location.reload(false);
-                }, 1000); 
-    
-               
-            }
+          // Handle success (note: no access to response.data due to 'no-cors' mode)
+          console.log('Request sent successfully');
+      
+          alert('Updates have been sent for approval.');
+          setTimeout(() => {
+            window.location.reload(false);
+          }, 1000);
         } catch (error) {
-            // Handle error
-            console.error('Error:', error);
+          // Handle error
+          console.error('Error:', error);
         }
       }
+
 
 
     function getBadgeColor(stage) {
@@ -803,7 +789,7 @@ function Project(){
         </button>
       </div>
       <div class="modal-body">
-                    <form onSubmit={localStorage.getItem('type') == 'secondary' ? handleUpdate : handleUpdateTwo}>
+                    <form onSubmit={localStorage.getItem('type') == 'secondary' ? handleUpdate : handleUpdatePrimary}>
                        
 
 
