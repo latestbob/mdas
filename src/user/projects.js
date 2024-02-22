@@ -321,7 +321,7 @@ function Project(){
 
 
         try {
-            const response = await axios.get(`https:/office.laurenparkerway.com/api/change?id=${idEdit}&date=${dateEdit}&budget=${budgetEdit}&changer_email=${localStorage.getItem('email')}&changer_name=${localStorage.getItem('title')}&stage=${stageEdit}&status=${statusEdit}`);
+            const response = await axios.get(`https://office.laurenparkerway.com/api/change?id=${idEdit}&date=${dateEdit}&budget=${budgetEdit}&changer_email=${localStorage.getItem('email')}&changer_name=${localStorage.getItem('title')}&stage=${stageEdit}&status=${statusEdit}`);
         
             // Handle success
             console.log('Data sent:', response.data);
