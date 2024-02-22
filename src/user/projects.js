@@ -333,23 +333,24 @@ function Project(){
             headers: {
               'Content-Type': 'application/json',
             },
-            mode: 'no-cors', // Set 'no-cors' mode
           });
       
-          // Handle success (note: no access to response.data due to 'no-cors' mode)
-          console.log('Request sent successfully');
+          // Handle success
+          console.log('Data sent:', response.data);
       
-          alert('Updates have been sent for approval.');
-          setTimeout(() => {
-            window.location.reload(false);
-          }, 1000);
+          if (response.data) {
+            console.log(response.data.message);
+      
+            alert('Updates have been sent for approval.');
+            setTimeout(() => {
+              window.location.reload(false);
+            }, 1000);
+          }
         } catch (error) {
           // Handle error
           console.error('Error:', error);
         }
       }
-
-
 
     function getBadgeColor(stage) {
         switch (stage) {
