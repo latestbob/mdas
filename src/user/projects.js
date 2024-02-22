@@ -318,48 +318,32 @@ function Project(){
 
     async function handleUpdatePrimary(e) {
         e.preventDefault();
-      
+
+
         try {
-          const response = await fetch('https:/office.laurenparkerway.com/api/change', {
-            method: 'PUT',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              id: idEdit,
-              date: dateEdit,
-              budget: budgetEdit,
-              changer_email: localStorage.getItem('email'),
-              changer_name: localStorage.getItem('title'),
-              stage: stageEdit,
-              status: statusEdit,
-            }),
-          });
-      
-          // Check if the request was successful (status code in the range 200-299)
-          if (response.ok) {
-            // Parse JSON response
-            const responseData = await response.json();
-      
+            const response = await axios.get(`https:/office.laurenparkerway.com/api/change?id=${idEdit}&date=${dateEdit}&budget=${budgetEdit}&changer_email=${localStorage.getItem('email')}&changer_name=${localStorage.getItem('title')}&stage=${stageEdit}&status=${statusEdit}`);
+        
             // Handle success
-            console.log('Data sent:', responseData);
-      
-            if (responseData) {
-              console.log(responseData.message);
-      
-              alert('Updates have been sent for approval.');
-              setTimeout(() => {
-                window.location.reload(false);
-              }, 1000);
+            console.log('Data sent:', response.data);
+    
+            if(response.data){
+                //console.log(response.data.message);
+
+                alert('Updates have been sent for approval.');
+        setTimeout(() => {
+          window.location.reload(false);
+        }, 1000);
+
+                  
+    
+              
             }
-          } else {
-            // Handle non-successful response (e.g., 4xx or 5xx status codes)
-            console.error('Error:', response.statusText);
+          } catch (error) {
+            // Handle error
+            console.error('Error:', error);
           }
-        } catch (error) {
-          // Handle fetch error
-          console.error('Fetch error:', error);
-        }
+      
+        
       }
       
 
