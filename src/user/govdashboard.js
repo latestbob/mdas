@@ -32,11 +32,21 @@ function GovDashboard(){
 
     React.useEffect(()=>{
        
-        
+        axios.get('https://office.laurenparkerway.com/api/completionrate')
+        .then(response => {
+         
+            setSummary(response.data);
+          //console.log('fetched');
+          console.log(response.data);
+          
+        })
+        .catch(error => {
+          console.log(error);
+        });
      
 
      
-    },[mdaname]);
+    },[]);
 
     
     const navigate = useNavigate();
@@ -59,6 +69,20 @@ function GovDashboard(){
             console.error("Error signing out:", error);
           });
       };
+
+
+      const[summary, setSummary] = useState(null);
+
+
+      React.useEffect(()=>{
+       
+        
+     
+
+     
+    },[]);
+
+
 
     return (
 
@@ -158,7 +182,7 @@ function GovDashboard(){
                                 <div className='viewflex'>
 
                                    
-                                    <Link className='btn maincolor'>Completion Rate - 10%</Link>
+                                    <Link className='btn maincolor'>Completion Rate - {summary ? summary.smoh_completion_rate : ''}%</Link>
 
                                     <Link  className='completion btn'style={{
                                         visibility:"hidden",
@@ -189,7 +213,7 @@ function GovDashboard(){
                             <div className='viewflex'>
 
                                    
-                                    <Link className='btn maincolor'>Completion Rate - 10%</Link>
+                                    <Link className='btn maincolor'>Completion Rate - {summary ? summary.hma_completion_rate : ''}%</Link>
 
                                     <Link className='completion btn'style={{
                                         visibility:"hidden",
@@ -221,7 +245,7 @@ function GovDashboard(){
                             <div className='viewflex'>
 
                                    
-                                    <Link className='btn maincolor'>Completion Rate - 10%</Link>
+                                    <Link className='btn maincolor'>Completion Rate - {summary ? summary.edihic_completion_rate : ''}%</Link>
 
                                     <Link className='completion btn'style={{
                                         visibility:"hidden",
@@ -249,7 +273,7 @@ function GovDashboard(){
                             <div className='viewflex'>
 
                                    
-                                    <Link className='btn maincolor'>Completion Rate - 10%</Link>
+                                    <Link className='btn maincolor'>Completion Rate - {summary ? summary.edihic_completion_rate : ''}%</Link>
 
                                     <Link className='completion btn'style={{
                                         visibility:"hidden",

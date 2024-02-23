@@ -11,6 +11,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 import { useLocation } from 'react-router-dom';
+import moment from 'moment';
 
 
 function UniqueDashboard(){
@@ -353,7 +354,7 @@ function UniqueDashboard(){
                                         
                                 <td>{m.initiative}</td>
                                
-                                <td>{m.date}</td>
+                                <td>{moment(m.date).format('DD/MM/YYYY')}</td>
                                 <td>{m.budget}</td>
                                 
                               
