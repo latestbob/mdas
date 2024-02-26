@@ -457,7 +457,7 @@ function UniqueDashboard(){
                                         
                               
                                
-                                <td>{moment(m.date).format('DD/MM/YYYY')}</td>
+                                <td>{m.date && moment(m.date).format('DD/MM/YYYY')}</td>
                                 <td>{m.budget}</td>
                                 
                               
@@ -472,7 +472,13 @@ function UniqueDashboard(){
 
                                <td>
                                  {
-                                   m.isApproved == true ? <p className='badge badge-success'>approved</p> :<p className='badge badge-danger'>rejected</p>
+                                   
+
+                                   m.isApproved === true
+                                   ? <p className='badge badge-success'>approved</p>
+                                   : m.isApproved === false
+                                     ? <p className='badge badge-danger'>rejected</p>
+                                     : <p className='badge badge-warning'>pending</p>
                                  }
                                </td>
 
