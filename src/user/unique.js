@@ -145,7 +145,7 @@ function UniqueDashboard(){
             return 'bg-danger text-light';
           // Add more cases for other stages if needed
           default:
-            return 'bg-secondary'; // Default color for unknown stages
+            return 'bg-secondary text-light'; // Default color for unknown stages
         }
       }
 
