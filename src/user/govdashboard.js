@@ -58,6 +58,7 @@ function GovDashboard(){
             console.log("User signed out");
 
             localStorage.removeItem("authid");
+            localStorage.removeItem("authemail");
 
          
             navigate('/');
@@ -99,7 +100,9 @@ function GovDashboard(){
                     <div className='flexdiv px-2'>
                             <img src={logo} className="logo mr-4"/>
 
-                        <h4 className='mdaname text-left'>Executive Dashboard</h4>
+                        <h4 className='mdaname text-left'>
+                            {localStorage.getItem('authemail') == "excellency@mdamonitor.com" ? 'Welcome Your Excellency' : 'Admin Dashboard'}
+                        </h4>
 
                     </div>
 

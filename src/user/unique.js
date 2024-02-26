@@ -24,6 +24,7 @@ function UniqueDashboard(){
     const location = useLocation();
     const[mdaname, setMdaName] = useState(location.state.mdaname);
     const[mdasInitiatives , setMdasInitiatives] = useState([]);
+    const[changes, setChanges] = useState([]);
 
     React.useEffect(()=>{
         var docId = localStorage.getItem("authid");
@@ -90,6 +91,7 @@ function UniqueDashboard(){
             console.log("User signed out");
 
             localStorage.removeItem("authid");
+            localStorage.removeItem("authemail");
 
          
             navigate('/');
@@ -162,7 +164,9 @@ function UniqueDashboard(){
                     <div className='flexdiv px-2'>
                             <img src={logo} className="logo mr-4"/>
 
-                        <h4 className='mdaname text-left'>Executive Dashboard</h4>
+                        <h4 className='mdaname text-left'>
+                        {localStorage.getItem('authemail') == "excellency@mdamonitor.com" ? 'Welcome Your Excellency' : 'Admin Dashboard'}
+                        </h4>
 
                     </div>
 
@@ -211,7 +215,7 @@ function UniqueDashboard(){
 <Link style={{
                         textDecoration:"none",
                     }} to={'/executive/dashboard'}>
-                    <p className='font-weight-bold py-1 mx-2 my-3 hoverme rounded'>Health MDAs</p>
+                    <p className='font-weight-bold py-1 mx-2  hoverme rounded'>Health MDAs</p>
                     </Link>
 
                     <br/>
@@ -365,11 +369,158 @@ function UniqueDashboard(){
                                 <td>
                                 <span className={`badge ${getStatusColor(m.status)}`}>{m.status}</span>
                                 </td>
-                                <td>
+                                <td >
 
-                                    {m.status == 'Late' ? <button className='btn btn-sm btn-danger'>Flag</button> : ''}
+                                <a onClick={function(e){
+                                  e.preventDefault();
+
+                                  axios.get(`https://office.laurenparkerway.com/api/change/unique?id=${m.id}`)
+                .then(response => {
+                 
+                    setChanges(response.data);
+                 
+                })
+                .catch(error => {
+                  console.log(error);
+                });
+                                }} type="button"  data-toggle="modal" data-target={`#exampleModal${m.id}`} className='btn text-info'style={{
+                                  fontSize:'12px',
+                                  fontWeight:'bold'
+                                }}>View Audit Log</a>  {m.status == 'Late' ? <button onClick={async function(e){
+                                  e.preventDefault();
+
+                                  ///
+
+                                  try {
+                                    const response = await axios.get(`https://office.laurenparkerway.com/api/late/email?owner=${m.owner}&initiative=${m.initiative}&date=${m.date}`);
+                                
+                                    // Handle success
+                                    console.log('Data sent:', response.data);
+                            
+                                    if(response.data){
+                                        //console.log(response.data.message);
+                        
+                                        alert('Late Attention called successful.');
+                                setTimeout(() => {
+                                  window.location.reload(false);
+                                }, 1000);
+                        
+                                          
+                            
+                                      
+                                    }
+                                  } catch (error) {
+                                    // Handle error
+                                    console.error('Error:', error);
+                                  }
+
+                                  
+
+                                  ////
+                                }} className='btn btn-sm btn-danger'>Call Attention</button> : <button style={{
+                                  visibility:"hidden",
+                                }}>Call Attention</button>}
                                    
                                 </td>
+
+                                <div class="modal fade" id={`exampleModal${m.id}`} tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">{m.initiative}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+                                <table className='table table-striped table-borderless table-hover'>
+                                  <thead>
+                                      <tr>
+                                          <th>Estimated Date</th>
+                                          <th>Budget</th>
+                                          <th>Stage</th>
+                                          <th>Status</th>
+                                          <th>Outcome</th>
+                                          <th>Update At</th>
+                                          
+      
+                                      </tr>
+                                  </thead>
+
+                                  <tbody>
+
+                                    
+
+                                  {changes && changes.map((m, index) => (
+                            // Your rendering logic for each item goes here
+                            <tr key={index}>
+                                        
+                              
+                               
+                                <td>{moment(m.date).format('DD/MM/YYYY')}</td>
+                                <td>{m.budget}</td>
+                                
+                              
+                                <td>
+                                <span className=''>{m.stage}</span>
+                                </td>
+
+                                <td>
+                                <span className=''>{m.status}</span>
+                                </td>
+                               
+
+                               <td>
+                                 {
+                                   m.isApproved == true ? <p className='badge badge-success'>approved</p> :<p className='badge badge-danger'>rejected</p>
+                                 }
+                               </td>
+
+                               <td>
+                                 {moment(m.created_at).format('DD/MM/YYYY HH:mm:ss')}
+                               </td>
+
+
+
+                               
+
+
+           
+                                      
+                                         </tr> 
+
+                                // Edit modal
+
+                                
+
+
+
+                                //end of edit modal
+                        ))
+
+                        }
+
+                       
+
+
+                                  </tbody>
+
+                                </table>
+
+                                {changes.length == 0 && <div className='py-5 text-center'>
+
+<h5 className='text-center'>No recent changes have been made</h5>
+
+
+
+</div>}
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+                                
 
                                 <div class="modal fade" id={`exampleModalLong${index}`} tabindex="-1" role="dialog" aria-labelledby={`exampleModalLongTitle${index}`} aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">

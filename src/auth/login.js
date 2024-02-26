@@ -23,6 +23,7 @@ function Login(){
 
    const[email, setEmail] = useState("");
    const[message, setMessage] = useState("");
+   const[isLoading, setLoading] = useState(false);
 
 
    async function handleSignIn(e) {
@@ -30,31 +31,20 @@ function Login(){
     setShowError(false);
   
     try {
+
+        setLoading(true);
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
       console.log("Signed in as:", user);
 
       localStorage.setItem("authid", user.uid);
+      localStorage.setItem("authemail",email);
   
-      // Now, let's query the Firestore collection
-    //   const mdasCollection = collection(db, "mdas");
-    //   const q = query(mdasCollection, where("email", "==", user.email));
-  
-    //   const querySnapshot = await getDocs(q);
-  
-    //   if (!querySnapshot.empty) {
-        
-    //     const document = querySnapshot.docs[0].data();
-  
-    //     localStorage.setItem("mdasDocumentId", querySnapshot.docs[0].id);
-    //     localStorage.setItem("mdasName", document.name);
-    //     localStorage.setItem("mdasLeader", document.leader);
-       
-    //   }
-  
+     setLoading(false)
       // Continue with your navigation logic
       navigate('/executive/dashboard');
     } catch (error) {
+        setLoading(false)
       const errorCode = error.code;
       const errorMessage = error.message;
       console.error("Error signing in:", errorCode, errorMessage);
@@ -116,7 +106,7 @@ function Login(){
                    
                         <br/>
                     <div className='text-center mt-3'>
-                <button type="submit"className='btn btn-success w-100 btn-sm submit py-2'>Go To Dashboard</button>
+                <button type="submit"className='btn btn-success w-100 btn-sm submit py-2'>{isLoading ? '....Loading' : 'Go To Dashboard'}</button>
 
                 </div>
 
