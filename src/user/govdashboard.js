@@ -185,7 +185,7 @@ function GovDashboard(){
                                 <div className='viewflex'>
 
                                    
-                                    <Link className='btn maincolor'>Completion Rate - {summary ? summary.smoh_completion_rate : ''}%</Link>
+                                    <Link className='btn maincolor'>Completion Rate - {summary ? Math.round(summary.smoh_completion_rate) : ''}%</Link>
 
                                     <Link  className='completion btn'style={{
                                         visibility:"hidden",
@@ -216,7 +216,7 @@ function GovDashboard(){
                             <div className='viewflex'>
 
                                    
-                                    <Link className='btn maincolor'>Completion Rate - {summary ? summary.hma_completion_rate : ''}%</Link>
+                                    <Link className='btn maincolor'>Completion Rate - {summary ? Math.round(summary.hma_completion_rate) : ''}%</Link>
 
                                     <Link className='completion btn'style={{
                                         visibility:"hidden",
@@ -248,7 +248,7 @@ function GovDashboard(){
                             <div className='viewflex'>
 
                                    
-                                    <Link className='btn maincolor'>Completion Rate - {summary ? summary.edihic_completion_rate : ''}%</Link>
+                                    <Link className='btn maincolor'>Completion Rate - {summary ? Math.round(summary.edihic_completion_rate) : ''}%</Link>
 
                                     <Link className='completion btn'style={{
                                         visibility:"hidden",
@@ -276,7 +276,7 @@ function GovDashboard(){
                             <div className='viewflex'>
 
                                    
-                                    <Link className='btn maincolor'>Completion Rate - {summary ? summary.phc_completion_rate : ''}%</Link>
+                                    <Link className='btn maincolor'>Completion Rate - {summary ? Math.round(summary.phc_completion_rate) : ''}%</Link>
 
                                     <Link className='completion btn'style={{
                                         visibility:"hidden",
