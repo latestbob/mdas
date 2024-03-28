@@ -11,8 +11,8 @@ import { useState , useEffect} from 'react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import moment from 'moment';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css'; // Import the styles
+
+
 
 
 function Project(){
@@ -506,12 +506,16 @@ function Project(){
                         <thead className=''>
                             <tr>
                                 {/* <th>Objective</th> */}
-                                <th>Key Initiatives</th>
+                                <th style={{
+                                    width:'40%',
+                                }}>Key Initiatives</th>
                                 {/* <th>Expected Outcome</th> */}
                                 <th>Estimated Completion Date</th>
                                 <th>Estimated Budget (NGN)</th>
                                 <th>Owner</th>
-                                <th>Supporting MDAs and Consultants</th>
+                                <th style={{
+                                    width:'30%',
+                                }}>Supporting MDAs and Consultants</th>
                                 <th>Stage</th>
                                 <th>Status</th>
                                 <th>Action</th>
@@ -556,12 +560,16 @@ function Project(){
                             // Your rendering logic for each item goes here
                             <tr key={index}>
                                         {/* <td>{m.objectives}</td> */}
-                                <td>{m.initiative}</td>
+                                <td  style={{
+                                    width:'40%',
+                                }}>{m.initiative}</td>
                                 {/* <td>{m.outcome}</td> */}
                                 <td>{moment(m.date).format('DD/MM/YYYY')}</td>
                                 <td>{m.budget}</td>
                                 <td>{m.owner}</td>
-                                <td>{m.support}</td>
+                                <td style={{
+                                    width:'30%',
+                                }}>{m.support}</td>
                                 <td>
                                 <span className={`badge ${getBadgeColor(m.stage)}`}>{m.stage}</span>
                                 </td>
