@@ -20,6 +20,7 @@ function Project(){
     const[mdaname, setMdaName] = useState("");
     const[email, setEmail] = useState("");
     const[mdasInitiatives , setMdasInitiatives] = useState([]);
+    const[mdasInitiativesTwo , setMdasInitiativesTwo] = useState([]);
     const[loading, setLoading] = useState(false);
 
     const navigate = useNavigate();
@@ -79,7 +80,8 @@ function Project(){
 
         if(mdaname != ""){
         
-               axios.get(`https://office.laurenparkerway.com/api/mdas/unique?mda=${mdaname}`)
+            if(mdaname != 'Edo State Primary Health Care Development Agency'){
+                axios.get(`https://office.laurenparkerway.com/api/mdas/unique?mda=${mdaname}`)
                 .then(response => {
                  
                     setMdasInitiatives(response.data);
@@ -91,7 +93,27 @@ function Project(){
                   console.log(error);
                 });
             }
+
+            else{
+                axios.get(`https://office.laurenparkerway.com/api/mdaobjectives?mda=${mdaname}`)
+                .then(response => {
+                 
+                    setMdasInitiativesTwo(response.data);
+                  console.log('fetched');
+                  console.log(response.data);
+                 
+                })
+                .catch(error => {
+                  console.log(error);
+                });
+            }
+               
+            }
+
+           
       }, [mdaname]);
+
+      
 
 
     
@@ -207,7 +229,7 @@ function Project(){
 
                 alert('Initiative created successfully');
              setTimeout(() => {
-               window.location.href = '/projects';
+                navigate('/projects');
              }, 1000); 
     
     
@@ -486,12 +508,12 @@ function Project(){
                 <div className='flexdiv'>
                     <h3 className='intro py-3'>2024 Key Initiatives </h3>
 
-                    {/* <button className='btn createbtn'type="button"data-toggle="modal" data-target="#exampleModalLong">Add New Initiative</button> */}
+                    <button className='btn createbtn'type="button"data-toggle="modal" data-target="#exampleModalLong">Add New Initiative</button>
 
-                    <button className='btn createbtn'onClick={function(e){
+                    {/* <button className='btn createbtn'onClick={function(e){
                         e.preventDefault();
                         alert("You are not authorized to make this request");
-                    }}>Add New Initiative</button>
+                    }}>Add New Initiative</button> */}
                 </div>
                 
 
@@ -500,6 +522,9 @@ function Project(){
 
 
                 <div className='table-responsive tablediv'>
+
+
+                   {mdaname != 'Edo State Primary Health Care Development Agency' ? 
 
                     <table className='table table-striped table-hover table-borderless'>
 
@@ -513,9 +538,7 @@ function Project(){
                                 <th>Estimated Completion Date</th>
                                 <th>Estimated Budget (NGN)</th>
                                 <th>Owner</th>
-                                <th style={{
-                                    width:'30%',
-                                }}>Supporting MDAs and Consultants</th>
+                                
                                 <th>Stage</th>
                                 <th>Status</th>
                                 <th>Action</th>
@@ -567,9 +590,7 @@ function Project(){
                                 <td>{moment(m.date).format('DD/MM/YYYY')}</td>
                                 <td>{m.budget}</td>
                                 <td>{m.owner}</td>
-                                <td style={{
-                                    width:'30%',
-                                }}>{m.support}</td>
+                                
                                 <td>
                                 <span className={`badge ${getBadgeColor(m.stage)}`}>{m.stage}</span>
                                 </td>
@@ -584,7 +605,7 @@ function Project(){
                                     setStageEdit(m.stage);
                                     setIdEdit(m.id);
                                     setStatusEdit(m.status);
-                                }}  className='btn btn-sm btn-warning text-dark'type="button"data-toggle="modal" data-target={`#exampleModalLong${index}`}>Edit</a>
+                                }}  className='btn btn-sm btn-warning text-dark'type="button"data-toggle="modal" data-target={`#exampleModalLong${index}`}>Edit</a> 
                                 </td>
 
                                 {localStorage.getItem('type') == 'secondary' && <td>
@@ -614,6 +635,40 @@ function Project(){
                                        
                                     }} type="button" data-toggle="modal" data-target={`#exampleModal${index}`} className='badge badge-info text-light font-weight-bold borderless'>Awaiting Approval</button>}
                                 </td> }
+
+
+                                {/* option modal box */}
+
+
+                                
+<div class="modal fade" id={`optionModal${index}`}tabindex="-1" role="dialog" aria-labelledby={`optionModalLabel${index}`} aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add New Option </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+          <form method="POST">
+              
+              <div className='form-group'>
+                  <label>Option</label>
+
+                  <textarea className='form-control'>{m.initiative}</textarea>
+
+              </div>
+          </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
                                 
 
                                 <div class="modal fade" id={`exampleModal${index}`} tabindex="-1" role="dialog" aria-labelledby={`exampleModalLabel${index}`}  aria-hidden="true">
@@ -916,6 +971,208 @@ function Project(){
                         </tbody>
 
                     </table>
+
+                    : 
+                <div>
+                   <table className='table table-striped table-hover table-borderless'>
+                          <thead className=''>
+                            <tr>
+                                {/* <th>Objective</th> */}
+                                <th style={{
+                                    width:'40%',
+                                }}>Key Initiatives</th>
+                                {/* <th>Expected Outcome</th> */}
+                                <th>Estimated Completion Date</th>
+                                <th>Estimated Budget (NGN)</th>
+                                <th>Owner</th>
+                                
+                                <th>Stage</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                                {localStorage.getItem('type') == 'secondary' && <th>Updates</th> }
+                            </tr>
+
+                        </thead>
+                        </table>
+
+
+                        {mdasInitiativesTwo.map((m, index) => (
+                            <div className='container font-weight-bold py-3 px-2'style={{
+                                fontSize:"13px",
+                            }}>
+                               <p> {m.objective}</p>
+
+
+                               <table className='table table-striped table-hover table-borderless'>
+                               <tbody>
+
+                                              
+       {m.init.map((inits,index) => (
+                <tr key={index}>
+                    <td style={{
+                        width:"40%",
+                    }}>{inits.initiative}</td>
+                      <td>{moment(inits.date).format('DD/MM/YYYY')}</td>
+                    <td>{inits.budget}</td>
+                    <td>{inits.owner}</td>
+                    <td>
+                                <span className={`badge ${getBadgeColor(inits.stage)}`}>{inits.stage}</span>
+                                </td>
+
+                                <td><span className={`badge ${getStatusColor(inits.status)}`}>{inits.status}</span></td>
+                                <td>
+                                    <a onClick={function(){
+                                    setDateEdit(inits.date);
+                                    setBudgetEdit(inits.budget);
+                                    setOwnerEdit(inits.owner);
+                                    setSupportEdit(inits.support);
+                                    setStageEdit(inits.stage);
+                                    setIdEdit(inits.id);
+                                    setStatusEdit(inits.status);
+                                }}  className='btn btn-sm btn-warning text-dark'type="button"data-toggle="modal" data-target={`#exampleModalLongTwo${index}`}>Edit</a> 
+                                </td>
+
+
+                    <td>Update</td>
+
+                    <div class="modal fade" id={`exampleModalLongTwo${index}`} tabindex="-1" role="dialog" aria-labelledby={`exampleModalLongTitle${index}`} aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Edit {inits.initiative}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+                    <form onSubmit={localStorage.getItem('type') == 'secondary' ? handleUpdate : handleUpdatePrimary}>
+                       
+
+
+
+                        <div className='form-group row'>
+                        
+
+                            <div className='col-md-6'>
+                                <label>Estimated Completion Date</label>
+                                <input onChange={function(e){
+                                    setDateEdit(e.target.value);
+                                }} type="date"value={dateEdit} className='form-control'placeholder='Estimated Completion Date'required/>
+                            </div>
+
+                            <div className='col-md-6'>
+                                <label>Estimated Budget (NGN)</label>
+                                <input onChange={function(e){
+                                    setBudgetEdit(e.target.value);
+                                }}  type="text"value={budgetEdit} className='form-control'placeholder='Expected Budget'required/>
+
+                                
+                            </div>
+                        </div>
+
+
+                        
+                            
+
+                          
+                                <input onChange={function(e){
+                                    setOwnerEdit(e.target.value);
+                                }} type="hidden"value={ownerEdit} className='form-control'placeholder='Asignee/Owner'required/>
+           
+
+                            
+                                <input onChange={function(e){
+                                    setSupportEdit(e.target.value);
+                                }} type="hidden"value={supportEdit} className='form-control'placeholder='Supporting MDAs/Consultants'required/>
+
+                                
+                            
+                       
+
+                        <div className='form-group row'>
+                            
+
+                            <div className='col-md-6'>
+                                <label>Current Stage</label>
+                                <select onChange={function(e){
+                                    setStageEdit(e.target.value);
+                                }} value={stageEdit}className='form-control'required>
+                                    <option value="">Choose Stage</option>
+                                    <option value="Initiation" >Initiation</option>
+                                    <option value="Planning" >Planning</option>
+                                    
+                                    <option value="Execution" >Execution</option>
+                                    <option value="Done" >Done</option>
+                                    
+                                </select>
+                            </div>
+
+                            <div className='col-md-6'>
+                                <label>Status</label>
+                                <select onChange={function(e){
+                                    setStatusEdit(e.target.value);
+
+                                   
+
+                                }} value={statusEdit} disabled={statusEdit === 'Late'} className='form-control' required>
+                                    <option value="">Choose Status</option>
+
+                                    <option value="Late">Late</option>
+                                    {statusOptions.map((option) => (
+                                        <option key={option} value={option}>
+                                            {option}
+                                        </option>
+                                        ))}
+
+                                        {/* <option value="Late">Late</option> */}
+                                    
+                                </select>
+                            </div>
+
+                            <input className='form-control'type="hidden"onChange={function(e){
+                                setIdEdit(e.target.value);
+                            }} value={idEdit}/>
+                        </div>
+
+
+                        
+
+                        <div className='form-group'>
+                            <button type='submit' className='btn btn-success text-center'>Update Initiative</button>
+                        </div>
+                    </form>
+      </div>
+     
+    </div>
+  </div>
+</div>
+
+
+
+                </tr>
+        ))}
+        </tbody>
+
+                               </table>
+
+
+
+                            </div>
+                                      
+                                         ))}
+
+                   </div>
+
+                   
+
+
+                                
+
+                   
+
+}
+
+                   
 
                 </div>
 
