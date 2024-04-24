@@ -70,6 +70,7 @@ function Project(){
     const[stageEdit, setStageEdit] = useState("");
     const[idEdit, setIdEdit] = useState("");
     const[statusEdit, setStatusEdit] = useState("");
+    const[percentageEdit , setPercentageEdit] = useState("");
 
     const[check, setChecked] = useState(false);
 
@@ -182,6 +183,7 @@ function Project(){
     const[owner, setOwner] = useState("");
     const[support, setSupport] = useState("");
     const[stage, setStage] = useState("");
+    
 
     // update 
 
@@ -208,7 +210,8 @@ function Project(){
             budget:budget,
             owner:owner,
             support:support,
-            stage:stage
+            stage:stage,
+            
             });
         
             // Handle success
@@ -263,6 +266,7 @@ function Project(){
                     support: supportEdit,
                     stage: stageEdit,
                     status: statusEdit,
+                    percentage:percentageEdit,
                 }),
             });
     
@@ -508,12 +512,12 @@ function Project(){
                 <div className='flexdiv'>
                     <h3 className='intro py-3'>2024 Key Initiatives </h3>
 
-                    <button className='btn createbtn'type="button"data-toggle="modal" data-target="#exampleModalLong">Add New Initiative</button>
+                    {/* <button className='btn createbtn'type="button"data-toggle="modal" data-target="#exampleModalLong">Add New Initiative</button> */}
 
-                    {/* <button className='btn createbtn'onClick={function(e){
+                    <button className='btn createbtn'onClick={function(e){
                         e.preventDefault();
                         alert("You are not authorized to make this request");
-                    }}>Add New Initiative</button> */}
+                    }}>Add New Initiative</button>
                 </div>
                 
 
@@ -537,7 +541,7 @@ function Project(){
                                 {/* <th>Expected Outcome</th> */}
                                 <th>Estimated Completion Date</th>
                                 <th>Estimated Budget (NGN)</th>
-                                <th>Owner</th>
+                           
                                 
                                 <th>Stage</th>
                                 <th>Status</th>
@@ -589,7 +593,7 @@ function Project(){
                                 {/* <td>{m.outcome}</td> */}
                                 <td>{moment(m.date).format('DD/MM/YYYY')}</td>
                                 <td>{m.budget}</td>
-                                <td>{m.owner}</td>
+                                
                                 
                                 <td>
                                 <span className={`badge ${getBadgeColor(m.stage)}`}>{m.stage}</span>
@@ -984,12 +988,15 @@ function Project(){
                                 {/* <th>Expected Outcome</th> */}
                                 <th>Estimated Completion Date</th>
                                 <th>Estimated Budget (NGN)</th>
-                                <th>Owner</th>
+                                
                                 
                                 <th>Stage</th>
                                 <th>Status</th>
+                                <th>Percentage Completion</th>
+                                
                                 <th>Action</th>
-                                {localStorage.getItem('type') == 'secondary' && <th>Updates</th> }
+                              
+                               
                             </tr>
 
                         </thead>
@@ -1014,12 +1021,13 @@ function Project(){
                     }}>{inits.initiative}</td>
                       <td>{moment(inits.date).format('DD/MM/YYYY')}</td>
                     <td>{inits.budget}</td>
-                    <td>{inits.owner}</td>
+                    
                     <td>
                                 <span className={`badge ${getBadgeColor(inits.stage)}`}>{inits.stage}</span>
                                 </td>
 
                                 <td><span className={`badge ${getStatusColor(inits.status)}`}>{inits.status}</span></td>
+                                <td className='font-weight-bold'>{inits.percentage}</td>
                                 <td>
                                     <a onClick={function(){
                                     setDateEdit(inits.date);
@@ -1029,23 +1037,26 @@ function Project(){
                                     setStageEdit(inits.stage);
                                     setIdEdit(inits.id);
                                     setStatusEdit(inits.status);
+                                    setPercentageEdit(inits.percentage);
                                 }}  className='btn btn-sm btn-warning text-dark'type="button"data-toggle="modal" data-target={`#exampleModalLongTwo${index}`}>Edit</a> 
                                 </td>
+                                
+                           
 
 
-                    <td>Update</td>
+                   
 
                     <div class="modal fade" id={`exampleModalLongTwo${index}`} tabindex="-1" role="dialog" aria-labelledby={`exampleModalLongTitle${index}`} aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Edit {inits.initiative}</h5>
+        <h5 class="modal-title" id="exampleModalLongTitle">{inits.initiative}</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-                    <form onSubmit={localStorage.getItem('type') == 'secondary' ? handleUpdate : handleUpdatePrimary}>
+                    <form onSubmit={handleUpdate}>
                        
 
 
@@ -1132,6 +1143,16 @@ function Project(){
                             <input className='form-control'type="hidden"onChange={function(e){
                                 setIdEdit(e.target.value);
                             }} value={idEdit}/>
+                        </div>
+
+                        <div className='form-group row'>
+                            <div className='col-md-6'>
+                                <label>Percentage Completion</label>
+                                <input onChange={function(e){
+                                    setPercentageEdit(e.target.value);
+                                }} value={percentageEdit} className='form-control' placeholder='Enter percentage without %' />
+                            </div>
+
                         </div>
 
 
