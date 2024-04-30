@@ -347,7 +347,7 @@ function Project(){
 
 
         try {
-            const response = await axios.get(`https://office.laurenparkerway.com/api/change?id=${idEdit}&date=${dateEdit}&budget=${budgetEdit}&changer_email=${localStorage.getItem('email')}&changer_name=${localStorage.getItem('title')}&stage=${stageEdit}&status=${statusEdit}`);
+            const response = await axios.get(`https://office.laurenparkerway.com/api/change?id=${idEdit}&date=${dateEdit}&budget=${budgetEdit}&changer_email=${localStorage.getItem('email')}&changer_name=${localStorage.getItem('title')}&stage=${stageEdit}&status=${statusEdit}&percentage=${percentageEdit}`);
         
             // Handle success
             console.log('Data sent:', response.data);
@@ -512,12 +512,12 @@ function Project(){
                 <div className='flexdiv'>
                     <h3 className='intro py-3'>2024 Key Initiatives </h3>
 
-                    {/* <button className='btn createbtn'type="button"data-toggle="modal" data-target="#exampleModalLong">Add New Initiative</button> */}
+                    <button className='btn createbtn'type="button"data-toggle="modal" data-target="#exampleModalLong">Add New Initiative</button>
 
-                    <button className='btn createbtn'onClick={function(e){
+                    {/* <button className='btn createbtn'onClick={function(e){
                         e.preventDefault();
                         alert("You are not authorized to make this request");
-                    }}>Add New Initiative</button>
+                    }}>Add New Initiative</button> */}
                 </div>
                 
 
@@ -995,6 +995,7 @@ function Project(){
                                 <th>Percentage Completion</th>
                                 
                                 <th>Action</th>
+                                {localStorage.getItem('type') == 'secondary' && <th>Updates</th> }
                               
                                
                             </tr>
@@ -1040,6 +1041,218 @@ function Project(){
                                     setPercentageEdit(inits.percentage);
                                 }}  className='btn btn-sm btn-warning text-dark'type="button"data-toggle="modal" data-target={`#exampleModalLongTwo${index}`}>Edit</a> 
                                 </td>
+
+
+                                {localStorage.getItem('type') == 'secondary' && <td>
+                                    {inits.flagged == 'pending' && <button onClick={async function(e){
+                                        e.preventDefault();
+
+                                        try {
+                                            const response = await axios.get(`https://office.laurenparkerway.com/api/changes?id=${inits.id}`);
+                                        
+                                            // Handle success
+                                            console.log('Data sent:', response.data);
+                                    
+                                            if(response.data){
+                                                //console.log(response.data.message);
+                                
+                                               setUpdateValues(response.data);
+                                
+                                                  
+                                    
+                                              
+                                            }
+                                          } catch (error) {
+                                            // Handle error
+                                            console.error('Error:', error);
+                                          }
+                                        
+                                       
+                                    }} type="button" data-toggle="modal" data-target={`#exampleModalTwo${index}`} className='badge badge-info text-light font-weight-bold borderless'>Awaiting Approval </button>}
+                                </td> }
+
+
+
+
+                                <div class="modal fade" id={`exampleModalTwo${index}`} tabindex="-1" role="dialog" aria-labelledby={`exampleModalLabelTwo${index}`}  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabelTwo">{inits.initiative}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+          <table className='table table-striped borderless'>
+              <thead>
+                  <tr>
+                      <th>Current Value</th>
+                      <th>Update Value</th>
+                  </tr>
+              </thead>
+              
+              <tbody>
+
+                  {
+                      updatedValue &&  updatedValue.date != inits.date && <tr>
+                      <td>{inits.date}</td>
+                      <td>{updatedValue && updatedValue.date}</td>
+                  </tr>
+                  }
+                  
+
+                  {
+                      updatedValue && updatedValue.budget != inits.budget && <tr>
+                      <td>{inits.budget}</td>
+                      <td>{updatedValue && updatedValue.budget}</td>
+                  </tr>
+                  }
+
+{
+                      updatedValue && updatedValue.stage != inits.stage && <tr>
+                      <td>{inits.stage}</td>
+                      <td>{updatedValue && updatedValue.stage}</td>
+                  </tr>
+                  }
+
+{
+                      updatedValue && updatedValue.status != inits.status && <tr>
+                      <td>{inits.status}</td>
+                      <td>{updatedValue && updatedValue.status}</td>
+                  </tr>
+                  }
+
+{
+                      updatedValue &&  updatedValue.percentage != inits.percentage && <tr>
+                      <td>Percentage - {inits.percentage == null ? 0 : inits.percentage}%</td>
+                      <td>{updatedValue && updatedValue.percentage}%</td>
+                  </tr>
+                  }
+                  
+              </tbody>
+
+          </table>
+
+
+          <hr />
+
+<div className='form-group'>
+    <input onChange={function(){
+        setChecked(!check);
+    }} type="checkbox"checked={check} /> <span className='px-2'>Add Comments</span>
+
+    <br />
+
+   {
+       check && <textarea onChange={function(e){
+           setComment(e.target.value);
+       }} value={comment} className='form-control'row="5"placeholder='Enter Comments'></textarea>
+   } 
+
+</div>
+
+      </div>
+
+     
+      <div class="modal-footer">
+        <button onClick={ async function (e) {
+  e.preventDefault();
+
+  try {
+    const response = await fetch('https://office.laurenparkerway.com/api/approve/change', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        id: inits.id,
+        comment: comment,
+      }),
+    });
+
+    const responseData = await response.json();
+
+
+
+
+
+    // Handle success
+    console.log('Data sent:', responseData);
+
+    if (responseData) {
+        console.log(responseData.message);
+
+        alert('Pending updates has been approved.');
+        setTimeout(() => {
+            window.location.reload(false);
+        }, 1000); 
+
+       
+    }
+} catch (error) {
+    // Handle error
+    console.error('Error:', error);
+}
+
+}
+
+} class="btn btn-success btn-sm" >Approve Changes</button>
+        <button 
+        
+        
+        onClick={ async function (e) {
+            e.preventDefault();
+          
+            try {
+              const response = await fetch('https://office.laurenparkerway.com/api/reject/change', {
+                method: 'PUT',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                  id: inits.id,
+                  comment: comment,
+                }),
+              });
+
+              const responseData = await response.json();
+
+
+
+
+
+            // Handle success
+            console.log('Data sent:', responseData);
+    
+            if (responseData) {
+                console.log(responseData.message);
+    
+                alert('Pending update rejected.');
+                setTimeout(() => {
+                    window.location.reload(false);
+                }, 1000); 
+    
+               
+            }
+        } catch (error) {
+            // Handle error
+            console.error('Error:', error);
+        }
+          
+          
+          }} 
+        
+        class="btn btn-danger btn-sm">Reject Changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+                               
                                 
                            
 
@@ -1056,7 +1269,7 @@ function Project(){
         </button>
       </div>
       <div class="modal-body">
-                    <form onSubmit={handleUpdate}>
+                    <form onSubmit={localStorage.getItem('type') == 'secondary' ? handleUpdate : handleUpdatePrimary}>
                        
 
 
