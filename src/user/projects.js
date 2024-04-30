@@ -922,7 +922,9 @@ function Project(){
 
                                    
 
-                                }} value={statusEdit} disabled={statusEdit === 'Late'} className='form-control' required>
+                                }} value={statusEdit}
+                                 disabled={statusEdit === 'Late'} 
+                                 className='form-control' required>
                                     <option value="">Choose Status</option>
 
                                     <option value="Late">Late</option>
@@ -1020,7 +1022,7 @@ function Project(){
                     <td style={{
                         width:"40%",
                     }}>{inits.initiative}</td>
-                      <td>{moment(inits.date).format('DD/MM/YYYY')}</td>
+                      <td>{moment(inits.date).format('DD/MM/YYYY')} {inits.id}</td>
                     <td>{inits.budget}</td>
                     
                     <td>
@@ -1338,7 +1340,10 @@ function Project(){
 
                                    
 
-                                }} value={statusEdit} disabled={statusEdit === 'Late'} className='form-control' required>
+                                }} value={statusEdit} 
+                                // disabled={statusEdit === 'Late'} 
+                                
+                                className='form-control' required>
                                     <option value="">Choose Status</option>
 
                                     <option value="Late">Late</option>
