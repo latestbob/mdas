@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mdagov-service
+  labels:
+    app: mdagov
+spec:
+  selector:
+    app: mdagov
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: LoadBalancer

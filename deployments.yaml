@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mdagov-deployment
+  labels:
+    app: mdagov
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mdagov
+  template:
+    metadata:
+      labels:
+        app: mdagov
+    spec:
+      containers:
+      - name: mdagov
+        image: edifice123/edogovmda:latest
+        ports:
+        - containerPort: 80
